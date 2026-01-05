@@ -69,7 +69,7 @@ async def async_setup_entry(
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="1.0.1",
+        sw_version="1.0.2",
     )
 
     sensors = [
