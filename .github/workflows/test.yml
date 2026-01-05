@@ -35,7 +35,7 @@ jobs:
     - name: Run tests
       run: |
         # Run pytest if tests exist, otherwise show message
-        if [ -d "tests" ] || find . -name "test_*.py" -o -name "*_test.py" | grep -q .; then
+        if [ -d "tests" ] || find custom_components tests -name "test_*.py" -o -name "*_test.py" 2>/dev/null | grep -q .; then
           pytest --cov=custom_components/pregnancy_tracker --cov-report=xml --cov-report=term
         else
           echo "No tests found. Test infrastructure ready for future tests."
@@ -116,7 +116,7 @@ jobs:
     - name: Check for common issues
       run: |
         echo "Checking for print statements (should use logging)..."
-        if grep -r "print(" custom_components/pregnancy_tracker --include="*.py"; then
+        if grep -rE '\bprint\s*\(' custom_components/pregnancy_tracker --include="*.py"; then
           echo "Warning: print() statements found, consider using logging"
         else
           echo "✓ No print() statements found"
