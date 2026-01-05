@@ -1,0 +1,12 @@
+{
+  "domain": "pregnancy_tracker",
+  "name": "Pregnancy Tracker",
+  "codeowners": ["@highergroundstudio"],
+  "config_flow": true,
+  "documentation": "https://github.com/highergroundstudio/home-assistant-pregnancy-tracker",
+  "integration_type": "device",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/highergroundstudio/home-assistant-pregnancy-tracker/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}
