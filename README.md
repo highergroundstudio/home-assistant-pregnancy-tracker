@@ -2,7 +2,9 @@ Below is a **clean, HACS-ready `README.md`** you can drop directly into the repo
 
 ---
 
-# Home Assistant Pregnancy Tracker
+# Home Assistant Pregnancy Tracker (Beta)
+
+> **⚠️ Beta Status**: This integration is currently in beta. Expect potential breaking changes and limited real-world testing. Please report issues on GitHub!
 
 A **privacy-first Home Assistant custom integration** that tracks pregnancy progress locally and presents it in a clear, human-friendly way — including fun size comparisons like *Veggie Mode* and *Dad Mode*, with optional images for dashboards and notifications.
 

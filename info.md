@@ -1,4 +1,6 @@
-# Pregnancy Tracker for Home Assistant
+# Pregnancy Tracker for Home Assistant (Beta)
+
+> **⚠️ Beta Release**: This integration is in beta testing. Features and configuration may change. Please report any issues!
 
 A privacy-focused custom integration that helps you track pregnancy progress entirely inside Home Assistant - because if Home Assistant can track your pool temperature, it can track this too! 🤰
 
