@@ -30,7 +30,7 @@ from .const import (
     SENSOR_STATUS,
     SENSOR_SIZE_COMPARISON,
 )
-from .comparisons import get_comparison
+from .comparisons import get_comparison, get_all_comparisons
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -351,17 +351,22 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         values = self._calculate_values()
         week = values["weeks_elapsed"]
         
-        # Default to veggie comparison as the main value
-        return get_comparison(week, "veggie")
+        # Show veggie comparison with emoji as the main value
+        veggie_data = get_comparison(week, "veggie")
+        return f"{veggie_data['emoji']} {veggie_data['label']}"
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
-        """Return additional attributes."""
+        """Return additional attributes with all comparison modes and emojis."""
         values = self._calculate_values()
         week = values["weeks_elapsed"]
         
+        comparisons = get_all_comparisons(week)
+        
         return {
             "week": week,
-            "veggie": get_comparison(week, "veggie"),
-            "dad": get_comparison(week, "dad"),
+            "veggie": comparisons["veggie"]["label"],
+            "veggie_emoji": comparisons["veggie"]["emoji"],
+            "dad": comparisons["dad"]["label"],
+            "dad_emoji": comparisons["dad"]["emoji"],
         }

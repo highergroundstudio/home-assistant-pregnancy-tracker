@@ -1,106 +1,88 @@
 """Size comparison data for pregnancy tracker."""
 
-# Week-by-week veggie comparisons (weeks 1-42)
-VEGGIE_COMPARISONS = {
-    1: "Poppy seed",
-    2: "Sesame seed",
-    3: "Peppercorn",
-    4: "Lentil",
-    5: "Apple seed",
-    6: "Sweet pea",
-    7: "Blueberry",
-    8: "Raspberry",
-    9: "Cherry",
-    10: "Strawberry",
-    11: "Brussels sprout",
-    12: "Plum",
-    13: "Lemon",
-    14: "Peach",
-    15: "Apple",
-    16: "Avocado",
-    17: "Turnip",
-    18: "Bell pepper",
-    19: "Mango",
-    20: "Banana",
-    21: "Carrot",
-    22: "Papaya",
-    23: "Grapefruit",
-    24: "Cantaloupe",
-    25: "Cauliflower",
-    26: "Lettuce head",
-    27: "Cabbage",
-    28: "Eggplant",
-    29: "Butternut squash",
-    30: "Large cabbage",
-    31: "Coconut",
-    32: "Jicama",
-    33: "Pineapple",
-    34: "Honeydew melon",
-    35: "Large honeydew melon",
-    36: "Romaine lettuce",
-    37: "Swiss chard",
-    38: "Leek",
-    39: "Mini watermelon",
-    40: "Small pumpkin",
-    41: "Pumpkin",
-    42: "Watermelon",
-}
-
-# Week-by-week dad comparisons (weeks 1-42)
-DAD_COMPARISONS = {
-    1: "Dad's cologne sample",
-    2: "Dad's tie clip",
-    3: "Dad's collar stay",
-    4: "Dad's cufflink",
-    5: "Dad's guitar pick",
-    6: "Dad's dice",
-    7: "Dad's USB drive",
-    8: "Dad's golf tee",
-    9: "Dad's bottle cap",
-    10: "Dad's house key",
-    11: "Dad's poker chip",
-    12: "Dad's AirPods case",
-    13: "Dad's remote control",
-    14: "Dad's coffee mug",
-    15: "Dad's baseball",
-    16: "Dad's favorite beer",
-    17: "Dad's gaming controller",
-    18: "Dad's wallet",
-    19: "Dad's running shoe",
-    20: "Dad's laptop charger",
-    21: "Dad's tablet",
-    22: "Dad's sneaker",
-    23: "Dad's iPad",
-    24: "Dad's laptop",
-    25: "Dad's toolbox",
-    26: "Dad's briefcase",
-    27: "Dad's basketball",
-    28: "Dad's bowling ball",
-    29: "Dad's backpack",
-    30: "Dad's monitor",
-    31: "Dad's guitar",
-    32: "Dad's golf bag",
-    33: "Dad's grill cover",
-    34: "Dad's cooler",
-    35: "Dad's tackle box",
-    36: "Dad's lawn mower",
-    37: "Dad's tool chest",
-    38: "Dad's recliner",
-    39: "Dad's TV",
-    40: "Dad's grill",
-    41: "Dad's workbench",
-    42: "Dad's car tire",
+# Week-by-week comparisons with emoji (weeks 1-42)
+COMPARISONS = {
+    1: {"veggie": "Poppy seed", "emoji": "🌾", "dad": "Dad's cologne sample"},
+    2: {"veggie": "Sesame seed", "emoji": "🌾", "dad": "Dad's tie clip"},
+    3: {"veggie": "Peppercorn", "emoji": "⚫", "dad": "Dad's collar stay"},
+    4: {"veggie": "Lentil", "emoji": "⚫", "dad": "Dad's cufflink"},
+    5: {"veggie": "Apple seed", "emoji": "🍎", "dad": "Dad's guitar pick"},
+    6: {"veggie": "Sweet pea", "emoji": "🟢", "dad": "Dad's dice"},
+    7: {"veggie": "Blueberry", "emoji": "🫐", "dad": "Dad's USB drive"},
+    8: {"veggie": "Raspberry", "emoji": "🫐", "dad": "Dad's golf tee"},
+    9: {"veggie": "Cherry", "emoji": "🍒", "dad": "Dad's bottle cap"},
+    10: {"veggie": "Strawberry", "emoji": "🍓", "dad": "Dad's house key"},
+    11: {"veggie": "Brussels sprout", "emoji": "🥬", "dad": "Dad's poker chip"},
+    12: {"veggie": "Plum", "emoji": "🍑", "dad": "Dad's AirPods case"},
+    13: {"veggie": "Lemon", "emoji": "🍋", "dad": "Dad's remote control"},
+    14: {"veggie": "Peach", "emoji": "🍑", "dad": "Dad's coffee mug"},
+    15: {"veggie": "Apple", "emoji": "🍎", "dad": "Dad's baseball"},
+    16: {"veggie": "Avocado", "emoji": "🥑", "dad": "Dad's favorite beer"},
+    17: {"veggie": "Turnip", "emoji": "🥬", "dad": "Dad's gaming controller"},
+    18: {"veggie": "Bell pepper", "emoji": "🫑", "dad": "Dad's wallet"},
+    19: {"veggie": "Mango", "emoji": "🥭", "dad": "Dad's running shoe"},
+    20: {"veggie": "Banana", "emoji": "🍌", "dad": "Dad's laptop charger"},
+    21: {"veggie": "Carrot", "emoji": "🥕", "dad": "Dad's tablet"},
+    22: {"veggie": "Papaya", "emoji": "🧡", "dad": "Dad's sneaker"},
+    23: {"veggie": "Grapefruit", "emoji": "🍊", "dad": "Dad's iPad"},
+    24: {"veggie": "Cantaloupe", "emoji": "🍈", "dad": "Dad's laptop"},
+    25: {"veggie": "Cauliflower", "emoji": "🥦", "dad": "Dad's toolbox"},
+    26: {"veggie": "Lettuce head", "emoji": "🥬", "dad": "Dad's briefcase"},
+    27: {"veggie": "Cabbage", "emoji": "🥬", "dad": "Dad's basketball"},
+    28: {"veggie": "Eggplant", "emoji": "🍆", "dad": "Dad's bowling ball"},
+    29: {"veggie": "Butternut squash", "emoji": "🎃", "dad": "Dad's backpack"},
+    30: {"veggie": "Large cabbage", "emoji": "🥬", "dad": "Dad's monitor"},
+    31: {"veggie": "Coconut", "emoji": "🥥", "dad": "Dad's guitar"},
+    32: {"veggie": "Jicama", "emoji": "🥔", "dad": "Dad's golf bag"},
+    33: {"veggie": "Pineapple", "emoji": "🍍", "dad": "Dad's grill cover"},
+    34: {"veggie": "Honeydew melon", "emoji": "🍈", "dad": "Dad's cooler"},
+    35: {"veggie": "Large honeydew melon", "emoji": "🍈", "dad": "Dad's tackle box"},
+    36: {"veggie": "Romaine lettuce", "emoji": "🥬", "dad": "Dad's lawn mower"},
+    37: {"veggie": "Swiss chard", "emoji": "🥬", "dad": "Dad's tool chest"},
+    38: {"veggie": "Leek", "emoji": "🧅", "dad": "Dad's recliner"},
+    39: {"veggie": "Mini watermelon", "emoji": "🍉", "dad": "Dad's TV"},
+    40: {"veggie": "Small pumpkin", "emoji": "🎃", "dad": "Dad's grill"},
+    41: {"veggie": "Pumpkin", "emoji": "🎃", "dad": "Dad's workbench"},
+    42: {"veggie": "Watermelon", "emoji": "🍉", "dad": "Dad's car tire"},
 }
 
 
-def get_comparison(week: int, mode: str, custom_data: dict | None = None) -> str:
-    """Get size comparison for a given week and mode."""
-    if mode == "custom":
-        if custom_data:
-            return custom_data.get(str(week), f"Week {week}")
-        # If custom mode selected but no data provided, fall back to veggie
-        return VEGGIE_COMPARISONS.get(week, f"Week {week}")
-    elif mode == "dad":
-        return DAD_COMPARISONS.get(week, f"Week {week}")
+def get_comparison(week: int, mode: str = "veggie") -> dict[str, str]:
+    """Get size comparison data for a given week.
+    
+    Returns a dict with 'label', 'emoji' keys.
+    """
+    if week < 1 or week > 42:
+        week = max(1, min(42, week))
+    
+    data = COMPARISONS.get(week, {})
+    
+    if mode == "dad":
+        return {
+            "label": data.get("dad", f"Week {week}"),
+            "emoji": data.get("emoji", ""),
+        }
     else:  # Default to veggie
-        return VEGGIE_COMPARISONS.get(week, f"Week {week}")
+        return {
+            "label": data.get("veggie", f"Week {week}"),
+            "emoji": data.get("emoji", ""),
+        }
+
+
+def get_all_comparisons(week: int) -> dict[str, dict[str, str]]:
+    """Get all comparison modes for a given week with emojis."""
+    if week < 1 or week > 42:
+        week = max(1, min(42, week))
+    
+    data = COMPARISONS.get(week, {})
+    
+    return {
+        "veggie": {
+            "label": data.get("veggie", f"Week {week}"),
+            "emoji": data.get("emoji", ""),
+        },
+        "dad": {
+            "label": data.get("dad", f"Week {week}"),
+            "emoji": data.get("emoji", ""),
+        },
+    }
