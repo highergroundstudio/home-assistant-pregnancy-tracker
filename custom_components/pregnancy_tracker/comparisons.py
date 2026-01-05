@@ -149,3 +149,65 @@ def get_weekly_summary(week: int) -> str:
         week = max(1, min(42, week))
     
     return WEEKLY_SUMMARIES.get(week, f"Week {week} of pregnancy.")
+
+
+# Weekly Bible verses (weeks 1-42)
+BIBLE_VERSES = {
+    1: {"text": "Before I formed you in the womb I knew you, before you were born I set you apart.", "reference": "Jeremiah 1:5"},
+    2: {"text": "For you created my inmost being; you knit me together in my mother's womb.", "reference": "Psalm 139:13"},
+    3: {"text": "I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well.", "reference": "Psalm 139:14"},
+    4: {"text": "Your eyes saw my unformed body; all the days ordained for me were written in your book before one of them came to be.", "reference": "Psalm 139:16"},
+    5: {"text": "Children are a heritage from the Lord, offspring a reward from him.", "reference": "Psalm 127:3"},
+    6: {"text": "Can a mother forget the baby at her breast and have no compassion on the child she has borne? Though she may forget, I will not forget you!", "reference": "Isaiah 49:15"},
+    7: {"text": "Yet you brought me out of the womb; you made me trust in you, even at my mother's breast.", "reference": "Psalm 22:9"},
+    8: {"text": "Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.", "reference": "Joshua 1:9"},
+    9: {"text": "The Lord is my strength and my shield; my heart trusts in him, and he helps me.", "reference": "Psalm 28:7"},
+    10: {"text": "Cast all your anxiety on him because he cares for you.", "reference": "1 Peter 5:7"},
+    11: {"text": "For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.", "reference": "Jeremiah 29:11"},
+    12: {"text": "Every good and perfect gift is from above, coming down from the Father of the heavenly lights.", "reference": "James 1:17"},
+    13: {"text": "The Lord bless you and keep you; the Lord make his face shine on you and be gracious to you.", "reference": "Numbers 6:24-25"},
+    14: {"text": "I can do all this through him who gives me strength.", "reference": "Philippians 4:13"},
+    15: {"text": "The Lord your God is with you, the Mighty Warrior who saves. He will take great delight in you; in his love he will no longer rebuke you, but will rejoice over you with singing.", "reference": "Zephaniah 3:17"},
+    16: {"text": "And we know that in all things God works for the good of those who love him.", "reference": "Romans 8:28"},
+    17: {"text": "Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.", "reference": "John 14:27"},
+    18: {"text": "This is the day the Lord has made; let us rejoice and be glad in it.", "reference": "Psalm 118:24"},
+    19: {"text": "Trust in the Lord with all your heart and lean not on your own understanding.", "reference": "Proverbs 3:5"},
+    20: {"text": "You will go out in joy and be led forth in peace; the mountains and hills will burst into song before you.", "reference": "Isaiah 55:12"},
+    21: {"text": "May the God of hope fill you with all joy and peace as you trust in him.", "reference": "Romans 15:13"},
+    22: {"text": "The Lord is my shepherd, I lack nothing. He makes me lie down in green pastures, he leads me beside quiet waters, he refreshes my soul.", "reference": "Psalm 23:1-3"},
+    23: {"text": "He will command his angels concerning you to guard you in all your ways.", "reference": "Psalm 91:11"},
+    24: {"text": "Even youths grow tired and weary, and young men stumble and fall; but those who hope in the Lord will renew their strength.", "reference": "Isaiah 40:30-31"},
+    25: {"text": "My grace is sufficient for you, for my power is made perfect in weakness.", "reference": "2 Corinthians 12:9"},
+    26: {"text": "The Lord is close to the brokenhearted and saves those who are crushed in spirit.", "reference": "Psalm 34:18"},
+    27: {"text": "Start children off on the way they should go, and even when they are old they will not turn from it.", "reference": "Proverbs 22:6"},
+    28: {"text": "God is our refuge and strength, an ever-present help in trouble.", "reference": "Psalm 46:1"},
+    29: {"text": "Come to me, all you who are weary and burdened, and I will give you rest.", "reference": "Matthew 11:28"},
+    30: {"text": "But blessed is the one who trusts in the Lord, whose confidence is in him.", "reference": "Jeremiah 17:7"},
+    31: {"text": "The Lord will watch over your coming and going both now and forevermore.", "reference": "Psalm 121:8"},
+    32: {"text": "Give thanks to the Lord, for he is good; his love endures forever.", "reference": "Psalm 107:1"},
+    33: {"text": "Being confident of this, that he who began a good work in you will carry it on to completion.", "reference": "Philippians 1:6"},
+    34: {"text": "She is clothed with strength and dignity; she can laugh at the days to come.", "reference": "Proverbs 31:25"},
+    35: {"text": "The Lord himself goes before you and will be with you; he will never leave you nor forsake you.", "reference": "Deuteronomy 31:8"},
+    36: {"text": "May he give you the desire of your heart and make all your plans succeed.", "reference": "Psalm 20:4"},
+    37: {"text": "Therefore do not worry about tomorrow, for tomorrow will worry about itself.", "reference": "Matthew 6:34"},
+    38: {"text": "Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up.", "reference": "Galatians 6:9"},
+    39: {"text": "Wait for the Lord; be strong and take heart and wait for the Lord.", "reference": "Psalm 27:14"},
+    40: {"text": "For nothing is impossible with God.", "reference": "Luke 1:37"},
+    41: {"text": "The Lord is good, a refuge in times of trouble. He cares for those who trust in him.", "reference": "Nahum 1:7"},
+    42: {"text": "And the God of all grace, who called you to his eternal glory in Christ, will himself restore you and make you strong, firm and steadfast.", "reference": "1 Peter 5:10"},
+}
+
+
+def get_bible_verse(week: int) -> dict[str, str]:
+    """Get Bible verse for a given week.
+    
+    Returns a dict with 'text' and 'reference' keys.
+    """
+    if week < 1 or week > 42:
+        week = max(1, min(42, week))
+    
+    verse_data = BIBLE_VERSES.get(week, {})
+    return {
+        "text": verse_data.get("text", ""),
+        "reference": verse_data.get("reference", ""),
+    }
