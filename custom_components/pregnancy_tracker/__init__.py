@@ -41,10 +41,12 @@ def _setup_images(hass: HomeAssistant) -> None:
     www_path = Path(hass.config.path("www"))
     dest_images = www_path / "pregnancy_tracker"
     
-    # Only copy if source exists and destination doesn't exist or is outdated
+    # Only copy if source exists
     if not source_images.exists():
         _LOGGER.warning("Bundled images not found at %s", source_images)
         return
+    
+    _LOGGER.debug("Bundled images found at %s", source_images)
     
     try:
         # Create www directory if it doesn't exist
@@ -58,7 +60,12 @@ def _setup_images(hass: HomeAssistant) -> None:
         else:
             _LOGGER.debug("Pregnancy tracker images already exist at %s", dest_images)
     except Exception as e:
-        _LOGGER.error("Failed to copy pregnancy tracker images: %s", e)
+        _LOGGER.error(
+            "Failed to copy pregnancy tracker images from %s to %s: %s",
+            source_images,
+            dest_images,
+            e,
+        )
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
