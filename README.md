@@ -49,7 +49,7 @@ The integration creates the following sensors:
 4. Enter the following information:
    - **Due Date**: The expected due date in YYYY-MM-DD format
    - **Pregnancy Length**: Optional, defaults to 280 days
-   - **Comparison Mode**: Choose between "veggie", "dad", or "custom"
+   - **Comparison Mode**: Choose between "veggie" or "dad" mode
 
 ## Size Comparison Modes
 
@@ -59,8 +59,8 @@ Compares baby size to fruits and vegetables (e.g., Week 8: Raspberry, Week 20: B
 ### Dad Mode
 Compares baby size to items dads can relate to (e.g., Week 8: Dad's golf tee, Week 20: Dad's laptop charger)
 
-### Custom Mode
-Provide your own JSON mapping of weeks to comparison items in the configuration.
+### Custom Mode (Advanced)
+For advanced users who want to provide custom comparisons, you can manually edit the integration's configuration in `.storage/core.config_entries` and add a `custom_comparisons` field with week-to-text mappings. Custom mode will fall back to veggie mode for any weeks not defined.
 
 ## Examples
 

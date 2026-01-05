@@ -95,8 +95,11 @@ DAD_COMPARISONS = {
 
 def get_comparison(week: int, mode: str, custom_data: dict | None = None) -> str:
     """Get size comparison for a given week and mode."""
-    if mode == "custom" and custom_data:
-        return custom_data.get(str(week), f"Week {week}")
+    if mode == "custom":
+        if custom_data:
+            return custom_data.get(str(week), f"Week {week}")
+        # If custom mode selected but no data provided, fall back to veggie
+        return VEGGIE_COMPARISONS.get(week, f"Week {week}")
     elif mode == "dad":
         return DAD_COMPARISONS.get(week, f"Week {week}")
     else:  # Default to veggie

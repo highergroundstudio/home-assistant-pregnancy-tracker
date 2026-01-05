@@ -73,7 +73,7 @@ class PregnancyTrackerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ): vol.All(vol.Coerce(int), vol.Range(min=1, max=365)),
                 vol.Optional(
                     CONF_COMPARISON_MODE, default=DEFAULT_COMPARISON_MODE
-                ): vol.In([COMPARISON_MODE_VEGGIE, COMPARISON_MODE_DAD, COMPARISON_MODE_CUSTOM]),
+                ): vol.In([COMPARISON_MODE_VEGGIE, COMPARISON_MODE_DAD]),
             }
         )
 
