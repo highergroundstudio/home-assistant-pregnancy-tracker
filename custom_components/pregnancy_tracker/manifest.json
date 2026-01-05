@@ -1,7 +1,9 @@
 {
   "domain": "pregnancy_tracker",
   "name": "Pregnancy Tracker",
-  "codeowners": ["@highergroundstudio"],
+  "codeowners": [
+    "@highergroundstudio"
+  ],
   "config_flow": true,
   "documentation": "https://github.com/highergroundstudio/home-assistant-pregnancy-tracker",
   "integration_type": "device",
