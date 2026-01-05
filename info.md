@@ -34,11 +34,11 @@ Classic fruit and vegetable comparisons
 - Week 20: Banana  
 - Week 40: Small pumpkin
 
-### 👨 Dad Mode
-Items dads can relate to
-- Week 8: Dad's golf tee
-- Week 20: Dad's laptop charger
-- Week 40: Dad's grill
+### 🔧 Dad Mode
+Items dads can relate to (workshop tools)
+- Week 8: Socket
+- Week 20: Paint roller
+- Week 40: Pressure washer
 
 **All 42 weeks include professionally designed comparison images that are automatically installed!**
 

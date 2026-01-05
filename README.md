@@ -201,14 +201,14 @@ Baby size compared to fruits and vegetables by week.
 
 **Includes 42 weeks of veggie images!**
 
-### 👨 Dad Mode
+### 🔧 Dad Mode
 
-Baby size compared to everyday and garage items (tools, sports gear, etc.).
-- Week 8: Dad's golf tee
-- Week 20: Dad's laptop charger
-- Week 40: Dad's grill
+Baby size compared to workshop and garage tools.
+- Week 8: Socket
+- Week 20: Paint roller
+- Week 40: Pressure washer
 
-**Includes 42 weeks of dad images!**
+**Includes 42 weeks of tool images!**
 
 ### Custom Mode
 

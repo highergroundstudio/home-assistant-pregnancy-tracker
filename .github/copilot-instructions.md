@@ -44,9 +44,10 @@ Each sensor class overrides `native_value` and optionally `extra_state_attribute
 
 ## Comparison System
 
-[comparisons.py](../custom_components/pregnancy_tracker/comparisons.py) contains two dicts:
-- `VEGGIE_COMPARISONS`: Week 1-42 mapped to fruit/vegetable names
-- `DAD_COMPARISONS`: Week 1-42 mapped to "Dad's [item]" descriptions
+[comparisons.py](../custom_components/pregnancy_tracker/comparisons.py) contains comparison data:
+- `COMPARISONS`: Week 1-42 mapped to both veggie and dad (tool) comparisons
+- Veggie mode: Fruit/vegetable names
+- Dad mode: Workshop and garage tool names
 
 `get_comparison(week, mode, custom_data=None)` returns the string label for a given week and mode. For custom mode, it falls back to manual config or a generic fallback.
 
