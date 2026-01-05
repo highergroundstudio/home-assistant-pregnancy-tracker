@@ -1,108 +1,181 @@
+Below is a **clean, HACS-ready `README.md`** you can drop directly into the repo. It is written to Home Assistant community norms, clear for non-technical users, and credible for maintainers.
+
+---
+
 # Home Assistant Pregnancy Tracker
 
-Home Assistant Pregnancy Tracker is a privacy-focused custom integration that lets you track pregnancy progress entirely inside Home Assistant. Because if Home Assistant can track your pool temperature, it can track this too.
+A **privacy-first Home Assistant custom integration** that tracks pregnancy progress locally and presents it in a clear, human-friendly way — including fun size comparisons like *Veggie Mode* and *Dad Mode*, with optional images for dashboards and notifications.
+
+No cloud services. No external APIs. All data stays inside your Home Assistant instance.
+
+---
 
 ## Features
 
-- **Privacy-First**: All calculations are done locally with date-based math. No cloud services or APIs.
-- **Complete Tracking**: Monitor weeks, days elapsed, days remaining, percent complete, trimester, and status
-- **Size Comparisons**: Fun size comparisons in "veggie" mode, "dad" mode, or custom JSON mapping
-- **UI Configuration**: Easy setup through Home Assistant's UI with config flow
-- **Customizable**: Set your own pregnancy length (default 280 days)
+* 📅 Track pregnancy progress from a **due date**
+* 📊 Automatically calculated:
 
-## Sensors
+  * Weeks along
+  * Days elapsed
+  * Days remaining
+  * Percent complete
+  * Trimester
+* 🥕 **Veggie Mode** – baby size compared to fruits & vegetables
+* 🧰 **Dad Mode** – baby size compared to everyday / garage items
+* 🧩 **Custom Mode** – bring your own comparisons and images
+* 🖼 Optional image support for dashboards and notifications
+* ⚙️ Fully configurable through the Home Assistant UI
+* 🔒 Privacy-first: no cloud, no accounts, no data sharing
 
-The integration creates the following sensors:
+---
 
-1. **Weeks** - Current week of pregnancy (with days into week as attribute)
-2. **Days Elapsed** - Total days since pregnancy start
-3. **Days Remaining** - Days until due date
-4. **Percent Complete** - Percentage of pregnancy completed
-5. **Trimester** - Current trimester (1, 2, or 3)
-6. **Status** - Current status (Just Started, In Progress, Due Today, or Overdue)
-7. **Size Comparison** - Fun size comparison based on current week
+## Installation (HACS)
 
-## Installation
+1. Open **HACS**
+2. Go to **Integrations**
+3. Click the three-dot menu → **Custom repositories**
+4. Add this repository URL
 
-### HACS (Recommended)
+   * Category: **Integration**
+5. Search for **Pregnancy Tracker** and install
+6. Restart Home Assistant
 
-1. Open HACS in your Home Assistant instance
-2. Click on "Integrations"
-3. Click the three dots in the top right corner
-4. Select "Custom repositories"
-5. Add this repository URL: `https://github.com/highergroundstudio/home-assistant-pregnancy-tracker`
-6. Select category "Integration"
-7. Click "Add"
-8. Find "Pregnancy Tracker" in the integration list and click "Download"
-9. Restart Home Assistant
-
-### Manual Installation
-
-1. Copy the `custom_components/pregnancy_tracker` directory to your Home Assistant's `custom_components` directory
-2. Restart Home Assistant
+---
 
 ## Configuration
 
-1. Go to Settings → Devices & Services
-2. Click "+ Add Integration"
-3. Search for "Pregnancy Tracker"
-4. Enter the following information:
-   - **Due Date**: The expected due date in YYYY-MM-DD format
-   - **Pregnancy Length**: Optional, defaults to 280 days
-   - **Comparison Mode**: Choose between "veggie" or "dad" mode
+### Initial Setup
 
-## Size Comparison Modes
+After installation:
+
+1. Go to **Settings → Devices & Services**
+2. Click **Add Integration**
+3. Search for **Pregnancy Tracker**
+4. Enter:
+
+   * **Due date** (required)
+   * Optional pregnancy length (default: 280 days)
+
+No YAML configuration required.
+
+---
+
+## Entities Created
+
+The integration creates the following sensors:
+
+| Entity                             | Description            |
+| ---------------------------------- | ---------------------- |
+| `sensor.pregnancy_weeks`           | Current pregnancy week |
+| `sensor.pregnancy_days`            | Days elapsed           |
+| `sensor.pregnancy_days_remaining`  | Countdown to due date  |
+| `sensor.pregnancy_percent`         | Percent complete       |
+| `sensor.pregnancy_trimester`       | First / Second / Third |
+| `sensor.pregnancy_status`          | Human-readable summary |
+| `sensor.pregnancy_size_comparison` | Fun size comparison    |
+
+### Size Comparison Sensor Attributes
+
+`sensor.pregnancy_size_comparison` includes:
+
+* `week`
+* `mode` (veggie / dad / custom)
+* `label`
+* `image` (URL or `/local/` path, if provided)
+
+This makes it easy to display text *and* images in Lovelace cards.
+
+---
+
+## Comparison Modes
 
 ### Veggie Mode
-Compares baby size to fruits and vegetables (e.g., Week 8: Raspberry, Week 20: Banana)
+
+Baby size compared to fruits and vegetables by week.
 
 ### Dad Mode
-Compares baby size to items dads can relate to (e.g., Week 8: Dad's golf tee, Week 20: Dad's laptop charger)
 
-### Custom Mode (Advanced)
-For advanced users who want to provide custom comparisons, you can manually edit the integration's configuration in `.storage/core.config_entries` and add a `custom_comparisons` field with week-to-text mappings. Custom mode will fall back to veggie mode for any weeks not defined.
+Baby size compared to everyday and garage items (tools, sports gear, etc.).
 
-## Examples
+### Custom Mode
 
-### Automation Example
+Use your own comparison labels and images.
 
-```yaml
-automation:
-  - alias: "Pregnancy Milestone Alert"
-    trigger:
-      - platform: state
-        entity_id: sensor.pregnancy_tracker_trimester
-    action:
-      - service: notify.mobile_app
-        data:
-          message: "Entered trimester {{ states('sensor.pregnancy_tracker_trimester') }}!"
+Create a file like:
+
+`/config/pregnancy_tracker_custom.json`
+
+```json
+{
+  "4":  { "label": "Poppy Seed", "image": "/local/pregnancy/04.webp" },
+  "12": { "label": "Plum", "image": "https://example.com/plum.webp" }
+}
 ```
 
-### Lovelace Card Example
+Then enable **Custom Mode** in the integration options.
 
-```yaml
-type: entities
-title: Pregnancy Tracker
-entities:
-  - entity: sensor.pregnancy_tracker_weeks
-  - entity: sensor.pregnancy_tracker_days_remaining
-  - entity: sensor.pregnancy_tracker_percent_complete
-  - entity: sensor.pregnancy_tracker_trimester
-  - entity: sensor.pregnancy_tracker_size_comparison
-```
+---
+
+## Options
+
+From **Devices & Services → Pregnancy Tracker → Options**:
+
+* Change comparison mode
+* Set custom comparison file path
+* Clamp countdown to 0 after due date
+
+Changes apply instantly — no restart required.
+
+---
+
+## Dashboard Example
+
+Use any standard card. Example with a Mushroom Template Card:
+
+* Primary: `sensor.pregnancy_status`
+* Secondary: `sensor.pregnancy_size_comparison`
+* Picture:
+
+  ```
+  {{ state_attr('sensor.pregnancy_size_comparison', 'image') }}
+  ```
+
+No custom Lovelace cards required.
+
+---
 
 ## Privacy
 
-This integration is completely privacy-focused:
-- No internet connection required
-- No data sent to external services
-- All calculations done locally using date math
-- No tracking or analytics
+This integration:
 
-## Support
+* Uses only local date calculations
+* Makes no network requests
+* Stores no data outside Home Assistant
 
-For issues, questions, or feature requests, please use the [GitHub Issues](https://github.com/highergroundstudio/home-assistant-pregnancy-tracker/issues) page.
+Perfect for sensitive, personal information.
+
+---
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License — free to use, modify, and share.
+
+---
+
+## Contributions
+
+Contributions are welcome:
+
+* New comparison modes
+* Image sets
+* Localization
+* Bug fixes and enhancements
+
+Please open an issue or pull request.
+
+---
+
+## Disclaimer
+
+This integration is for **informational and personal use only**.
+It is not medical advice and should not be used for medical decision-making.
