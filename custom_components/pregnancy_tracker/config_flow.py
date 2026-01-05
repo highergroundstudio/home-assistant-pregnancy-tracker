@@ -11,6 +11,7 @@ from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 import homeassistant.helpers.config_validation as cv
+from homeassistant.helpers import selector
 
 from .const import (
     DOMAIN,
@@ -56,9 +57,6 @@ class PregnancyTrackerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             CONF_PREGNANCY_LENGTH: user_input.get(
                                 CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH
                             ),
-                            CONF_COMPARISON_MODE: user_input.get(
-                                CONF_COMPARISON_MODE, DEFAULT_COMPARISON_MODE
-                            ),
                         },
                     )
             except ValueError:
@@ -66,13 +64,14 @@ class PregnancyTrackerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         data_schema = vol.Schema(
             {
-                vol.Required(CONF_DUE_DATE): str,
+                vol.Required(CONF_DUE_DATE): selector.DateSelector(),
                 vol.Optional(
                     CONF_PREGNANCY_LENGTH, default=DEFAULT_PREGNANCY_LENGTH
-                ): vol.All(vol.Coerce(int), vol.Range(min=1, max=365)),
-                vol.Optional(
-                    CONF_COMPARISON_MODE, default=DEFAULT_COMPARISON_MODE
-                ): vol.In([COMPARISON_MODE_VEGGIE, COMPARISON_MODE_DAD]),
+                ): selector.NumberSelector(
+                    selector.NumberSelectorConfig(
+                        min=1, max=365, mode=selector.NumberSelectorMode.BOX
+                    )
+                ),
             }
         )
 

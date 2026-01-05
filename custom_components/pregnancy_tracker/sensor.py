@@ -43,7 +43,6 @@ async def async_setup_entry(
     """Set up Pregnancy Tracker sensors from a config entry."""
     due_date_str = config_entry.data[CONF_DUE_DATE]
     pregnancy_length = config_entry.data.get(CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH)
-    comparison_mode = config_entry.data.get(CONF_COMPARISON_MODE, DEFAULT_COMPARISON_MODE)
 
     due_date = datetime.strptime(due_date_str, "%Y-%m-%d").date()
     start_date = due_date - timedelta(days=pregnancy_length)
@@ -54,7 +53,7 @@ async def async_setup_entry(
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="1.0.0",
+        sw_version="0.1.0-beta",
     )
 
     sensors = [
@@ -64,7 +63,7 @@ async def async_setup_entry(
         PregnancyPercentSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyTrimesterSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyStatusSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
-        PregnancySizeComparisonSensor(config_entry, due_date, start_date, pregnancy_length, comparison_mode, device_info),
+        PregnancySizeComparisonSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
     ]
 
     async_add_entities(sensors)
@@ -339,12 +338,10 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         due_date: date,
         start_date: date,
         pregnancy_length: int,
-        comparison_mode: str,
         device_info: DeviceInfo,
     ) -> None:
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
-        self._comparison_mode = comparison_mode
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_SIZE_COMPARISON}"
         self._attr_name = "Size Comparison"
 
@@ -354,17 +351,17 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         values = self._calculate_values()
         week = values["weeks_elapsed"]
         
-        # Get custom comparison data if available (advanced users can manually add this)
-        # If not present, get_comparison will fall back to the selected mode
-        custom_data = self._config_entry.data.get("custom_comparisons")
-        
-        return get_comparison(week, self._comparison_mode, custom_data)
+        # Default to veggie comparison as the main value
+        return get_comparison(week, "veggie")
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
         """Return additional attributes."""
         values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        
         return {
-            "comparison_mode": self._comparison_mode,
-            "week": values["weeks_elapsed"],
+            "week": week,
+            "veggie": get_comparison(week, "veggie"),
+            "dad": get_comparison(week, "dad"),
         }

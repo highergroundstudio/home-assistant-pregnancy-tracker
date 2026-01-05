@@ -3,11 +3,10 @@
     "step": {
       "user": {
         "title": "Set up Pregnancy Tracker",
-        "description": "Configure your pregnancy tracker",
+        "description": "Configure your pregnancy tracker. Both veggie and dad size comparisons will be available.",
         "data": {
-          "due_date": "Due Date (YYYY-MM-DD)",
-          "pregnancy_length": "Pregnancy Length (days)",
-          "comparison_mode": "Size Comparison Mode"
+          "due_date": "Due Date",
+          "pregnancy_length": "Pregnancy Length (days)"
         }
       }
     },
