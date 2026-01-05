@@ -68,6 +68,8 @@ async def async_setup_entry(
         PregnancyTrimesterSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyStatusSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancySizeComparisonSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyDadSizeComparisonSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancySizeComparisonImageSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyCountdownSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyDueDateRangeSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyWeeklySummarySensor(config_entry, due_date, start_date, pregnancy_length, device_info),
@@ -358,10 +360,8 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         """Return the state of the sensor."""
         values = self._calculate_values()
         week = values["weeks_elapsed"]
-        
-        # Show veggie comparison with emoji as the main value
         veggie_data = get_comparison(week, "veggie")
-        return f"{veggie_data['emoji']} {veggie_data['label']}"
+        return veggie_data["label"]
 
     @property
     def extra_state_attributes(self) -> dict[str, Any]:
@@ -374,9 +374,91 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         return {
             "week": week,
             "veggie": comparisons["veggie"]["label"],
-            "veggie_emoji": comparisons["veggie"]["emoji"],
             "dad": comparisons["dad"]["label"],
-            "dad_emoji": comparisons["dad"]["emoji"],
+            "veggie_image": comparisons["veggie"].get("image"),
+            "dad_image": comparisons["dad"].get("image"),
+        }
+
+
+class PregnancyDadSizeComparisonSensor(PregnancyTrackerSensorBase):
+    """Sensor for dad-mode size comparison."""
+
+    _attr_icon = "mdi:ruler"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_DAD_SIZE_COMPARISON}"
+        self._attr_name = "Dad Size Comparison"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        dad_data = get_comparison(week, "dad")
+        return dad_data["label"]
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        comparisons = get_all_comparisons(week)
+        return {
+            "week": week,
+            "veggie": comparisons["veggie"]["label"],
+            "dad": comparisons["dad"]["label"],
+            "veggie_image": comparisons["veggie"].get("image"),
+            "dad_image": comparisons["dad"].get("image"),
+        }
+
+
+class PregnancySizeComparisonImageSensor(PregnancyTrackerSensorBase):
+    """Sensor exposing image URLs for size comparisons."""
+
+    _attr_icon = "mdi:image-outline"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_SIZE_COMPARISON_IMAGE}"
+        self._attr_name = "Size Comparison Image"
+
+    @property
+    def native_value(self) -> str | None:
+        """Return the primary image URL (veggie) for convenience."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        comparisons = get_all_comparisons(week)
+        return comparisons["veggie"].get("image")
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return both veggie and dad image URLs plus labels."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        comparisons = get_all_comparisons(week)
+        return {
+            "week": week,
+            "veggie": comparisons["veggie"]["label"],
+            "veggie_image": comparisons["veggie"].get("image"),
+            "dad": comparisons["dad"]["label"],
+            "dad_image": comparisons["dad"].get("image"),
         }
 
 

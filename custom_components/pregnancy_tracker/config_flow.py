@@ -132,7 +132,7 @@ class PregnancyTrackerOptionsFlow(config_entries.OptionsFlow):
                 errors["due_date"] = "invalid_date"
 
         # Get current values
-        current_due_date = self.config_entry.data.get(CONF_DUE_DATE)
+        current_due_date = self.config_entry.data.get(CONF_DUE_DATE, date.today().isoformat())
         current_pregnancy_length = self.config_entry.data.get(
             CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH
         )
