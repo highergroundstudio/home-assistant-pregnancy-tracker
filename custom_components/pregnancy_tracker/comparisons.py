@@ -230,7 +230,7 @@ def get_bible_verse(week: int, custom_path: str | None = None) -> dict[str, str]
                     "reference": custom_data.get("reference", ""),
                 }
             elif isinstance(custom_data, str):
-                # If only text is provided, try to parse reference from the end
+                # If only text is provided, reference will be empty
                 return {
                     "text": custom_data,
                     "reference": "",
