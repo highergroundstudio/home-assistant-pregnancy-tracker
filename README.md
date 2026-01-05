@@ -141,6 +141,18 @@ Then enable **Custom Mode** in the integration options.
 
 ---
 
+## Updating the Integration
+
+When a new version of the integration is released:
+
+1. Update the integration via HACS
+2. **Restart Home Assistant** to load the new version
+3. Alternatively, you can reload the integration from **Settings → Devices & Services → Pregnancy Tracker → ⋮ → Reload**
+
+**Note**: For major version updates, a full Home Assistant restart is recommended to ensure all changes are properly applied.
+
+---
+
 ## Options
 
 From **Devices & Services → Pregnancy Tracker → Options**:
@@ -201,6 +213,8 @@ Contributions are welcome:
 * Bug fixes and enhancements
 
 Please open an issue or pull request.
+
+**Note**: This integration has been developed with assistance from GitHub Copilot, which has helped in code generation, improvements, and maintenance throughout the development process.
 
 ---
 
