@@ -116,9 +116,17 @@ jobs:
     - name: Check for common issues
       run: |
         echo "Checking for print statements (should use logging)..."
-        ! grep -r "print(" custom_components/pregnancy_tracker --include="*.py" || echo "Warning: print() statements found, consider using logging"
+        if grep -r "print(" custom_components/pregnancy_tracker --include="*.py"; then
+          echo "Warning: print() statements found, consider using logging"
+        else
+          echo "✓ No print() statements found"
+        fi
         
         echo "Checking for hardcoded paths..."
-        ! grep -r "/home/" custom_components/pregnancy_tracker --include="*.py" || echo "Warning: hardcoded paths found"
+        if grep -r "/home/" custom_components/pregnancy_tracker --include="*.py"; then
+          echo "Warning: hardcoded paths found"
+        else
+          echo "✓ No hardcoded paths found"
+        fi
         
         echo "✓ Basic validation checks complete"
