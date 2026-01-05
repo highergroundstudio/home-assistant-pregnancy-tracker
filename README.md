@@ -21,6 +21,9 @@ No cloud services. No external APIs. All data stays inside your Home Assistant i
 * 🥕 **Veggie Mode** – baby size compared to fruits & vegetables
 * 🧰 **Dad Mode** – baby size compared to everyday / garage items
 * 🧩 **Custom Mode** – bring your own comparisons
+* 📖 **Bible Verses** – weekly spiritual encouragement with carefully selected verses
+* 🏆 **Milestones** – track important pregnancy milestones
+* 📝 **Weekly Summaries** – baby development information for each week
 * 🖼 Optional image support (bring your own images)
 * ⚙️ Fully configurable through the Home Assistant UI
 * 🔒 Privacy-first: no cloud, no accounts, no data sharing
@@ -75,15 +78,22 @@ No YAML configuration required.
 
 The integration creates the following sensors:
 
-| Entity                             | Description            |
-| ---------------------------------- | ---------------------- |
-| `sensor.pregnancy_weeks`           | Current pregnancy week |
-| `sensor.pregnancy_days`            | Days elapsed           |
-| `sensor.pregnancy_days_remaining`  | Countdown to due date  |
-| `sensor.pregnancy_percent`         | Percent complete       |
-| `sensor.pregnancy_trimester`       | First / Second / Third |
-| `sensor.pregnancy_status`          | Human-readable summary |
-| `sensor.pregnancy_size_comparison` | Fun size comparison    |
+| Entity                                  | Description                           |
+| --------------------------------------- | ------------------------------------- |
+| `sensor.pregnancy_weeks`                | Current pregnancy week                |
+| `sensor.pregnancy_days`                 | Days elapsed                          |
+| `sensor.pregnancy_days_remaining`       | Countdown to due date                 |
+| `sensor.pregnancy_percent`              | Percent complete                      |
+| `sensor.pregnancy_trimester`            | First / Second / Third                |
+| `sensor.pregnancy_status`               | Human-readable summary                |
+| `sensor.pregnancy_size_comparison`      | Veggie size comparison                |
+| `sensor.pregnancy_dad_size_comparison`  | Dad mode size comparison              |
+| `sensor.pregnancy_size_comparison_image`| Image URLs for comparisons            |
+| `sensor.pregnancy_countdown`            | Countdown in weeks and days format    |
+| `sensor.pregnancy_due_date_range`       | Due date range with term status       |
+| `sensor.pregnancy_weekly_summary`       | Baby development summary              |
+| `sensor.pregnancy_milestone`            | Pregnancy milestones tracker          |
+| `sensor.pregnancy_bible_verse`          | Weekly Bible verse for encouragement  |
 
 ### Size Comparison Sensor Attributes
 
@@ -95,6 +105,24 @@ The integration creates the following sensors:
 * `image` (path where images would be located if you provide your own)
 
 This makes it easy to display text comparisons in Lovelace cards, and optionally add images if you provide them.
+
+### Bible Verse Sensor
+
+`sensor.pregnancy_bible_verse` provides spiritual encouragement throughout your pregnancy journey with carefully selected Bible verses:
+
+* **Weekly verses**: A different verse for each week of pregnancy (weeks 1-42)
+* **State**: The verse text is displayed as the sensor state
+* **Attributes**: 
+  * `week` - Current pregnancy week
+  * `reference` - Bible verse reference (e.g., "Psalm 139:13")
+  * `text` - Full verse text
+
+The verses change weekly based on your pregnancy progress, offering relevant encouragement and inspiration. Each verse has been selected to provide comfort, hope, and spiritual support during this special time.
+
+**Example verses:**
+- Week 2: "For you created my inmost being; you knit me together in my mother's womb." - Psalm 139:13
+- Week 20: "You will go out in joy and be led forth in peace; the mountains and hills will burst into song before you." - Isaiah 55:12
+- Week 40: "For nothing is impossible with God." - Luke 1:37
 
 ---
 
@@ -177,6 +205,27 @@ Or with the Entity card:
 ```yaml
 type: entity
 entity: sensor.pregnancy_size_comparison
+```
+
+### Bible Verse Card Example
+
+Display weekly Bible verses for spiritual encouragement:
+
+```yaml
+type: markdown
+content: >
+  ## 📖 This Week's Verse
+
+  {{ states('sensor.pregnancy_bible_verse') }}
+
+  *{{ state_attr('sensor.pregnancy_bible_verse', 'reference') }}*
+```
+
+Or use a simple entity card:
+
+```yaml
+type: entity
+entity: sensor.pregnancy_bible_verse
 ```
 
 **Note**: The integration provides text-based size comparisons by default. Images are **not included** but can be optionally added by placing your own images at `/config/www/pregnancy_tracker/{mode}/week_{number}.png`. The `sensor.pregnancy_size_comparison` entity includes an `image` attribute with the path where images would be located if you add them.
