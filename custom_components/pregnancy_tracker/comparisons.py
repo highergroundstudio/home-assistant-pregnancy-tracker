@@ -260,10 +260,12 @@ def _load_custom_bible_verses(file_path: str) -> dict:
         
         # If path is relative, try to resolve it from common Home Assistant locations
         if not path.is_absolute():
+            # Try current directory first (for testing)
+            if path.exists():
+                pass  # Use the path as is
             # Try /config directory (standard Home Assistant config directory)
-            config_path = Path("/config") / file_path
-            if config_path.exists():
-                path = config_path
+            elif (Path("/config") / file_path).exists():
+                path = Path("/config") / file_path
             else:
                 _LOGGER.warning(
                     "Custom Bible verses file not found at relative path: %s", 
