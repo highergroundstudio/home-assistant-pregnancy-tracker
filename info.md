@@ -36,9 +36,9 @@ Classic fruit and vegetable comparisons
 
 ### 🔧 Dad Mode
 Items dads can relate to (workshop tools)
-- Week 8: Socket
-- Week 20: Paint roller
-- Week 40: Pressure washer
+- Week 8: AA battery
+- Week 20: Adjustable wrench
+- Week 40: Wet/dry vac
 
 **All 42 weeks include professionally designed comparison images that are automatically installed!**
 

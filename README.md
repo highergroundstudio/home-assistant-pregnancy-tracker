@@ -204,9 +204,9 @@ Baby size compared to fruits and vegetables by week.
 ### 🔧 Dad Mode
 
 Baby size compared to workshop and garage tools.
-- Week 8: Socket
-- Week 20: Paint roller
-- Week 40: Pressure washer
+- Week 8: AA battery
+- Week 20: Adjustable wrench
+- Week 40: Wet/dry vac
 
 **Includes 42 weeks of tool images!**
 
