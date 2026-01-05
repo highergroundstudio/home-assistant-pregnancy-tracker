@@ -19,7 +19,7 @@ No cloud services. No external APIs. All data stays inside your Home Assistant i
   * Percent complete
   * Trimester
 * 🥕 **Veggie Mode** – baby size compared to fruits & vegetables
-* 🧰 **Dad Mode** – baby size compared to everyday / garage items
+* 🔧 **Dad Mode** – baby size compared to workshop and garage tools
 * 🧩 **Custom Mode** – bring your own comparisons
 * 📖 **Bible Verses** – weekly spiritual encouragement with carefully selected verses
 * 🏆 **Milestones** – track important pregnancy milestones
