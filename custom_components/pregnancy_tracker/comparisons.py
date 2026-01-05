@@ -50,8 +50,10 @@ COMPARISONS = {
 def _image_path(mode: str, week: int) -> str:
     """Build an image path for a given mode/week.
 
-    By default, we reference local www paths so users can drop their own assets at:
+    Images are bundled with the integration and automatically copied to:
     /config/www/pregnancy_tracker/{mode}/week_{week}.png
+    
+    Users can override by placing their own images at these paths.
     """
     return f"/local/pregnancy_tracker/{mode}/week_{week}.png"
 
