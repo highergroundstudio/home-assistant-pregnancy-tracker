@@ -1,0 +1,22 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Pregnancy Tracker",
+        "description": "Configure your pregnancy tracker",
+        "data": {
+          "due_date": "Due Date (YYYY-MM-DD)",
+          "pregnancy_length": "Pregnancy Length (days)",
+          "comparison_mode": "Size Comparison Mode"
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "Due date cannot be in the past",
+      "invalid_date": "Invalid date format. Please use YYYY-MM-DD"
+    },
+    "abort": {
+      "already_configured": "This pregnancy tracker is already configured"
+    }
+  }
+}
