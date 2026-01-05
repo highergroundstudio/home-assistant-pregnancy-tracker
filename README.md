@@ -1,12 +1,8 @@
-Below is a **clean, HACS-ready `README.md`** you can drop directly into the repo. It is written to Home Assistant community norms, clear for non-technical users, and credible for maintainers.
-
----
-
 # Home Assistant Pregnancy Tracker (Beta)
 
 > **⚠️ Beta Status**: This integration is currently in beta. Expect potential breaking changes and limited real-world testing. Please report issues on GitHub!
 
-A **privacy-first Home Assistant custom integration** that tracks pregnancy progress locally and presents it in a clear, human-friendly way — including fun size comparisons like *Veggie Mode* and *Dad Mode*, with optional images for dashboards and notifications.
+A **privacy-first Home Assistant custom integration** that tracks pregnancy progress locally and presents it in a clear, human-friendly way — including fun size comparisons like *Veggie Mode* and *Dad Mode*.
 
 No cloud services. No external APIs. All data stays inside your Home Assistant instance.
 
@@ -24,20 +20,36 @@ No cloud services. No external APIs. All data stays inside your Home Assistant i
   * Trimester
 * 🥕 **Veggie Mode** – baby size compared to fruits & vegetables
 * 🧰 **Dad Mode** – baby size compared to everyday / garage items
-* 🧩 **Custom Mode** – bring your own comparisons and images
-* 🖼 Optional image support for dashboards and notifications
+* 🧩 **Custom Mode** – bring your own comparisons
+* 📖 **Bible Verses** – weekly spiritual encouragement with carefully selected verses
+* 🏆 **Milestones** – track important pregnancy milestones
+* 📝 **Weekly Summaries** – baby development information for each week
+* 🖼 Optional image support (bring your own images)
 * ⚙️ Fully configurable through the Home Assistant UI
 * 🔒 Privacy-first: no cloud, no accounts, no data sharing
 
 ---
 
-## Installation (HACS)
+## Installation
+
+### Option 1: HACS Store (Recommended)
+
+This integration is now available directly in the HACS store!
+
+1. Open **HACS**
+2. Go to **Integrations**
+3. Search for **Pregnancy Tracker**
+4. Click **Download**
+5. Restart Home Assistant
+
+### Option 2: Custom Repository
+
+Alternatively, you can add it as a custom repository:
 
 1. Open **HACS**
 2. Go to **Integrations**
 3. Click the three-dot menu → **Custom repositories**
 4. Add this repository URL
-
    * Category: **Integration**
 5. Search for **Pregnancy Tracker** and install
 6. Restart Home Assistant
@@ -66,15 +78,23 @@ No YAML configuration required.
 
 The integration creates the following sensors:
 
-| Entity                             | Description            |
-| ---------------------------------- | ---------------------- |
-| `sensor.pregnancy_weeks`           | Current pregnancy week |
-| `sensor.pregnancy_days`            | Days elapsed           |
-| `sensor.pregnancy_days_remaining`  | Countdown to due date  |
-| `sensor.pregnancy_percent`         | Percent complete       |
-| `sensor.pregnancy_trimester`       | First / Second / Third |
-| `sensor.pregnancy_status`          | Human-readable summary |
-| `sensor.pregnancy_size_comparison` | Fun size comparison    |
+| Entity                                       | Description                           |
+| -------------------------------------------- | ------------------------------------- |
+| `sensor.pregnancy_weeks`                     | Current pregnancy week                |
+| `sensor.pregnancy_days`                      | Days elapsed                          |
+| `sensor.pregnancy_days_remaining`            | Countdown to due date                 |
+| `sensor.pregnancy_percent`                   | Percent complete                      |
+| `sensor.pregnancy_trimester`                 | First / Second / Third                |
+| `sensor.pregnancy_status`                    | Human-readable summary                |
+| `sensor.pregnancy_size_comparison`           | Veggie size comparison                |
+| `sensor.pregnancy_dad_size_comparison`       | Dad mode size comparison              |
+| `sensor.pregnancy_size_comparison_image`     | Image URLs for comparisons            |
+| `sensor.pregnancy_countdown`                 | Countdown in weeks and days format    |
+| `sensor.pregnancy_due_date_range`            | Due date range with term status       |
+| `sensor.pregnancy_weekly_summary`            | Baby development summary              |
+| `sensor.pregnancy_milestone`                 | Pregnancy milestones tracker          |
+| `sensor.pregnancy_bible_verse`               | Weekly Bible verse for encouragement  |
+| `sensor.pregnancy_bible_verse_reference`     | Bible verse book and chapter          |
 
 ### Size Comparison Sensor Attributes
 
@@ -83,21 +103,112 @@ The integration creates the following sensors:
 * `week`
 * `mode` (veggie / dad / custom)
 * `label`
-* `image` (URL or `/local/` path, if provided)
+* `image` (path where images would be located if you provide your own)
 
-This makes it easy to display text *and* images in Lovelace cards.
+This makes it easy to display text comparisons in Lovelace cards, and optionally add images if you provide them.
+
+### Bible Verse Sensor
+
+`sensor.pregnancy_bible_verse` provides spiritual encouragement throughout your pregnancy journey with carefully selected Bible verses:
+
+* **Weekly verses**: A different verse for each week of pregnancy (weeks 1-42)
+* **State**: The verse text is displayed as the sensor state
+* **Attributes**: 
+  * `week` - Current pregnancy week
+  * `reference` - Bible verse reference (e.g., "Psalm 139:13")
+  * `text` - Full verse text
+  * `custom_verses_enabled` - Whether custom verses are being used
+
+The verses change weekly based on your pregnancy progress, offering relevant encouragement and inspiration. Each verse has been selected to provide comfort, hope, and spiritual support during this special time.
+
+**Example verses:**
+- Week 2: "For you created my inmost being; you knit me together in my mother's womb." - Psalm 139:13
+- Week 20: "You will go out in joy and be led forth in peace; the mountains and hills will burst into song before you." - Isaiah 55:12
+- Week 40: "For nothing is impossible with God." - Luke 1:37
+
+#### Customizing Bible Verses
+
+You can provide your own Bible verses by creating a JSON file and specifying its path in the integration configuration:
+
+**1. Create a custom verses file** (e.g., `/config/pregnancy_bible_verses.json`):
+
+```json
+{
+  "1": {
+    "text": "Your custom verse for week 1",
+    "reference": "Book Chapter:Verse"
+  },
+  "2": {
+    "text": "Your custom verse for week 2",
+    "reference": "Book Chapter:Verse"
+  },
+  "20": {
+    "text": "Every good gift and every perfect gift is from above.",
+    "reference": "James 1:17"
+  }
+}
+```
+
+**Notes:**
+- Week numbers should be strings (e.g., "1", "2", "20")
+- You only need to specify weeks you want to customize
+- Any week not in your custom file will use the default verse
+- Both `text` and `reference` fields are optional but recommended
+
+**2. Configure the integration:**
+- Go to **Settings → Devices & Services → Pregnancy Tracker**
+- Click **Configure** (or Options if already set up)
+- Enter the path to your custom verses file in **Custom Bible Verses File**
+  - Use relative path: `pregnancy_bible_verses.json` (will look in `/config/`)
+  - Or absolute path: `/config/my_custom_verses.json`
+- Click **Submit**
+
+The integration will reload and use your custom verses for the specified weeks!
+
+For a complete guide on customizing Bible verses, see **[CUSTOM_BIBLE_VERSES.md](CUSTOM_BIBLE_VERSES.md)**.
+
+### Bible Verse Reference Sensor
+
+`sensor.pregnancy_bible_verse_reference` provides the book and chapter information separately from the verse text, offering more flexibility in how you display Bible verse information:
+
+* **Weekly references**: Changes weekly based on pregnancy progress
+* **State**: The book and chapter (e.g., "Psalm 139")
+* **Attributes**:
+  * `week` - Current pregnancy week
+  * `book` - Bible book name (e.g., "Psalm")
+  * `chapter` - Chapter number(s) (e.g., "139")
+  * `verse` - Verse number(s) (e.g., "13")
+  * `full_reference` - Complete reference (e.g., "Psalm 139:13")
+
+This sensor is particularly useful when you want to:
+- Display just the book and chapter in your dashboard
+- Create automations based on specific books of the Bible
+- Build custom cards that format the reference differently
+- Reference the scripture location without showing the full text
 
 ---
 
 ## Comparison Modes
 
-### Veggie Mode
+The integration includes **bundled comparison images** for both Veggie and Dad modes! Images are automatically copied to your `/config/www/pregnancy_tracker/` directory on setup.
+
+### 🥬 Veggie Mode
 
 Baby size compared to fruits and vegetables by week.
+- Week 8: Raspberry
+- Week 20: Banana  
+- Week 40: Small pumpkin
 
-### Dad Mode
+**Includes 42 weeks of veggie images!**
+
+### 👨 Dad Mode
 
 Baby size compared to everyday and garage items (tools, sports gear, etc.).
+- Week 8: Dad's golf tee
+- Week 20: Dad's laptop charger
+- Week 40: Dad's grill
+
+**Includes 42 weeks of dad images!**
 
 ### Custom Mode
 
@@ -115,6 +226,20 @@ Create a file like:
 ```
 
 Then enable **Custom Mode** in the integration options.
+
+**Note:** You can override the bundled images by placing your own images at `/config/www/pregnancy_tracker/{mode}/week_{week}.png`
+
+---
+
+## Updating the Integration
+
+When a new version of the integration is released:
+
+1. Update the integration via HACS
+2. **Restart Home Assistant** to load the new version
+3. Alternatively, you can reload the integration from **Settings → Devices & Services → Pregnancy Tracker → ⋮ → Reload**
+
+**Note**: For major version updates, a full Home Assistant restart is recommended to ensure all changes are properly applied.
 
 ---
 
@@ -136,11 +261,57 @@ Use any standard card. Example with a Mushroom Template Card:
 
 * Primary: `sensor.pregnancy_status`
 * Secondary: `sensor.pregnancy_size_comparison`
-* Picture:
 
-  ```
-  {{ state_attr('sensor.pregnancy_size_comparison', 'image') }}
-  ```
+Or with the Entity card:
+
+```yaml
+type: entity
+entity: sensor.pregnancy_size_comparison
+```
+
+### Bible Verse Card Example
+
+Display weekly Bible verses for spiritual encouragement:
+
+```yaml
+type: markdown
+content: >
+  ## 📖 This Week's Verse
+
+  {{ states('sensor.pregnancy_bible_verse') }}
+
+  *{{ state_attr('sensor.pregnancy_bible_verse', 'reference') }}*
+```
+
+Or use a simple entity card:
+
+```yaml
+type: entity
+entity: sensor.pregnancy_bible_verse
+```
+
+### Bible Verse Reference Card Example
+
+Display just the Bible reference with book and chapter:
+
+```yaml
+type: entity
+entity: sensor.pregnancy_bible_verse_reference
+```
+
+Or create a custom card that combines both sensors:
+
+```yaml
+type: markdown
+content: >
+  ## 📖 {{ states('sensor.pregnancy_bible_verse_reference') }}
+
+  *{{ state_attr('sensor.pregnancy_bible_verse_reference', 'book') }} {{ state_attr('sensor.pregnancy_bible_verse_reference', 'chapter') }}:{{ state_attr('sensor.pregnancy_bible_verse_reference', 'verse') }}*
+  
+  {{ states('sensor.pregnancy_bible_verse') }}
+```
+
+**Note**: The integration provides text-based size comparisons by default. Images are **not included** but can be optionally added by placing your own images at `/config/www/pregnancy_tracker/{mode}/week_{number}.png`. The `sensor.pregnancy_size_comparison` entity includes an `image` attribute with the path where images would be located if you add them.
 
 No custom Lovelace cards required.
 
@@ -174,6 +345,18 @@ Contributions are welcome:
 * Bug fixes and enhancements
 
 Please open an issue or pull request.
+
+### Development and Testing
+
+This repository includes automated testing and quality assurance via GitHub Actions:
+
+* **Test Suite**: Runs on Python 3.9, 3.10, 3.11, and 3.12
+* **Code Quality**: Automated linting with flake8, Black, and isort
+* **Validation**: JSON structure validation for manifest and strings files
+
+The workflow runs automatically on push and pull requests to `main` and `develop` branches. All checks must pass before merging.
+
+**Note**: This integration has been developed with assistance from GitHub Copilot, which has helped in code generation, improvements, and maintenance throughout the development process.
 
 ---
 

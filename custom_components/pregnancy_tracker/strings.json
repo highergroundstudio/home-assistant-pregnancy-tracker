@@ -6,7 +6,11 @@
         "description": "Configure your pregnancy tracker. Both veggie and dad size comparisons will be available.",
         "data": {
           "due_date": "Due Date",
-          "pregnancy_length": "Pregnancy Length (days)"
+          "pregnancy_length": "Pregnancy Length (days)",
+          "custom_bible_verses": "Custom Bible Verses File (optional)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Path to a JSON file with custom Bible verses (e.g., pregnancy_bible_verses.json or /config/my_verses.json). Leave empty to use default verses."
         }
       }
     },
@@ -25,7 +29,11 @@
         "description": "Update your due date or pregnancy length. Current due date: {current_due_date}",
         "data": {
           "due_date": "Due Date",
-          "pregnancy_length": "Pregnancy Length (days)"
+          "pregnancy_length": "Pregnancy Length (days)",
+          "custom_bible_verses": "Custom Bible Verses File (optional)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Path to a JSON file with custom Bible verses. Leave empty to use default verses."
         }
       }
     },

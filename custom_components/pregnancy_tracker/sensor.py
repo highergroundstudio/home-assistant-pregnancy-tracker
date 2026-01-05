@@ -1,4 +1,8 @@
-"""Sensor platform for Pregnancy Tracker integration."""
+"""Sensor platform for Pregnancy Tracker integration.
+
+This integration has been developed with assistance from GitHub Copilot,
+which has helped in code generation, improvements, and maintenance.
+"""
 from __future__ import annotations
 
 import logging
@@ -20,6 +24,7 @@ from .const import (
     CONF_DUE_DATE,
     CONF_PREGNANCY_LENGTH,
     CONF_COMPARISON_MODE,
+    CONF_CUSTOM_BIBLE_VERSES,
     DEFAULT_PREGNANCY_LENGTH,
     DEFAULT_COMPARISON_MODE,
     SENSOR_WEEKS,
@@ -35,8 +40,10 @@ from .const import (
     SENSOR_DUE_DATE_RANGE,
     SENSOR_WEEKLY_SUMMARY,
     SENSOR_MILESTONE,
+    SENSOR_BIBLE_VERSE,
+    SENSOR_BIBLE_VERSE_REFERENCE,
 )
-from .comparisons import get_comparison, get_all_comparisons, get_weekly_summary
+from .comparisons import get_comparison, get_all_comparisons, get_weekly_summary, get_bible_verse, parse_bible_reference
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -49,17 +56,20 @@ async def async_setup_entry(
     """Set up Pregnancy Tracker sensors from a config entry."""
     due_date_str = config_entry.data[CONF_DUE_DATE]
     pregnancy_length = config_entry.data.get(CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH)
+    custom_bible_verses = config_entry.data.get(CONF_CUSTOM_BIBLE_VERSES, "")
 
     due_date = datetime.strptime(due_date_str, "%Y-%m-%d").date()
     start_date = due_date - timedelta(days=pregnancy_length)
 
     # Create device info for grouping sensors
+    # Note: sw_version must match the version in manifest.json
+    # After updating the version, users should restart Home Assistant or reload the integration
     device_info = DeviceInfo(
         identifiers={(DOMAIN, config_entry.entry_id)},
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="0.3.3-beta",
+        sw_version="1.0.1",
     )
 
     sensors = [
@@ -76,6 +86,8 @@ async def async_setup_entry(
         PregnancyDueDateRangeSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyWeeklySummarySensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyMilestoneSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyBibleVerseSensor(config_entry, due_date, start_date, pregnancy_length, device_info, custom_bible_verses),
+        PregnancyBibleVerseReferenceSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
     ]
 
     async_add_entities(sensors)
@@ -687,4 +699,89 @@ class PregnancyMilestoneSensor(PregnancyTrackerSensorBase):
             "milestone_count": len(milestones_reached),
             "next_milestone": next_milestone,
             "weeks_to_next_milestone": next_milestone_weeks,
+        }
+
+
+class PregnancyBibleVerseSensor(PregnancyTrackerSensorBase):
+    """Sensor for weekly Bible verse."""
+
+    _attr_icon = "mdi:book-open-variant"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+        custom_bible_verses: str = "",
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_BIBLE_VERSE}"
+        self._attr_name = "Bible Verse"
+        self._custom_bible_verses = custom_bible_verses
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week, self._custom_bible_verses if self._custom_bible_verses else None)
+        return verse_data["text"]
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week, self._custom_bible_verses if self._custom_bible_verses else None)
+        return {
+            "week": week,
+            "reference": verse_data["reference"],
+            "text": verse_data["text"],
+            "custom_verses_enabled": bool(self._custom_bible_verses),
+        }
+
+
+class PregnancyBibleVerseReferenceSensor(PregnancyTrackerSensorBase):
+    """Sensor for Bible verse reference (book and chapter)."""
+
+    _attr_icon = "mdi:bookmark-outline"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_BIBLE_VERSE_REFERENCE}"
+        self._attr_name = "Bible Verse Reference"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor (book and chapter)."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week)
+        reference_parts = parse_bible_reference(verse_data["reference"])
+        return reference_parts["book_and_chapter"]
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week)
+        reference_parts = parse_bible_reference(verse_data["reference"])
+        return {
+            "week": week,
+            "book": reference_parts["book"],
+            "chapter": reference_parts["chapter"],
+            "verse": reference_parts["verse"],
+            "full_reference": verse_data["reference"],
         }

@@ -7,6 +7,7 @@ CONF_DUE_DATE = "due_date"
 CONF_PREGNANCY_LENGTH = "pregnancy_length"
 CONF_COMPARISON_MODE = "comparison_mode"
 CONF_CUSTOM_COMPARISONS = "custom_comparisons"  # For advanced users (manual config only)
+CONF_CUSTOM_BIBLE_VERSES = "custom_bible_verses"  # Path to custom Bible verses JSON file
 
 # Default values
 DEFAULT_PREGNANCY_LENGTH = 280
@@ -31,3 +32,5 @@ SENSOR_COUNTDOWN = "countdown"
 SENSOR_DUE_DATE_RANGE = "due_date_range"
 SENSOR_WEEKLY_SUMMARY = "weekly_summary"
 SENSOR_MILESTONE = "milestone"
+SENSOR_BIBLE_VERSE = "bible_verse"
+SENSOR_BIBLE_VERSE_REFERENCE = "bible_verse_reference"
