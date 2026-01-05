@@ -2,7 +2,7 @@
 
 > **⚠️ Beta Status**: This integration is currently in beta. Expect potential breaking changes and limited real-world testing. Please report issues on GitHub!
 
-A **privacy-first Home Assistant custom integration** that tracks pregnancy progress locally and presents it in a clear, human-friendly way — including fun size comparisons like *Veggie Mode* and *Dad Mode*, with optional images for dashboards and notifications.
+A **privacy-first Home Assistant custom integration** that tracks pregnancy progress locally and presents it in a clear, human-friendly way — including fun size comparisons like *Veggie Mode* and *Dad Mode*.
 
 No cloud services. No external APIs. All data stays inside your Home Assistant instance.
 
@@ -20,8 +20,8 @@ No cloud services. No external APIs. All data stays inside your Home Assistant i
   * Trimester
 * 🥕 **Veggie Mode** – baby size compared to fruits & vegetables
 * 🧰 **Dad Mode** – baby size compared to everyday / garage items
-* 🧩 **Custom Mode** – bring your own comparisons and images
-* 🖼 Optional image support for dashboards and notifications
+* 🧩 **Custom Mode** – bring your own comparisons
+* 🖼 Optional image support (bring your own images)
 * ⚙️ Fully configurable through the Home Assistant UI
 * 🔒 Privacy-first: no cloud, no accounts, no data sharing
 
@@ -79,9 +79,9 @@ The integration creates the following sensors:
 * `week`
 * `mode` (veggie / dad / custom)
 * `label`
-* `image` (URL or `/local/` path, if provided)
+* `image` (path where images would be located if you provide your own)
 
-This makes it easy to display text *and* images in Lovelace cards.
+This makes it easy to display text comparisons in Lovelace cards, and optionally add images if you provide them.
 
 ---
 
@@ -132,11 +132,15 @@ Use any standard card. Example with a Mushroom Template Card:
 
 * Primary: `sensor.pregnancy_status`
 * Secondary: `sensor.pregnancy_size_comparison`
-* Picture:
 
-  ```
-  {{ state_attr('sensor.pregnancy_size_comparison', 'image') }}
-  ```
+Or with the Entity card:
+
+```yaml
+type: entity
+entity: sensor.pregnancy_size_comparison
+```
+
+**Note**: The integration provides text-based size comparisons by default. Images are **not included** but can be optionally added by placing your own images at `/config/www/pregnancy_tracker/{mode}/week_{number}.png`. The `sensor.pregnancy_size_comparison` entity includes an `image` attribute with the path where images would be located if you add them.
 
 No custom Lovelace cards required.
 
