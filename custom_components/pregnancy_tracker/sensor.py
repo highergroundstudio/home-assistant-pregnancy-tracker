@@ -354,7 +354,8 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         values = self._calculate_values()
         week = values["weeks_elapsed"]
         
-        # Get custom comparison data if available
+        # Get custom comparison data if available (advanced users can manually add this)
+        # If not present, get_comparison will fall back to the selected mode
         custom_data = self._config_entry.data.get("custom_comparisons")
         
         return get_comparison(week, self._comparison_mode, custom_data)

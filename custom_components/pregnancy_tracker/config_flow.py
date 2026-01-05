@@ -21,7 +21,6 @@ from .const import (
     DEFAULT_COMPARISON_MODE,
     COMPARISON_MODE_VEGGIE,
     COMPARISON_MODE_DAD,
-    COMPARISON_MODE_CUSTOM,
 )
 
 _LOGGER = logging.getLogger(__name__)
