@@ -35,8 +35,9 @@ from .const import (
     SENSOR_DUE_DATE_RANGE,
     SENSOR_WEEKLY_SUMMARY,
     SENSOR_MILESTONE,
+    SENSOR_BIBLE_VERSE,
 )
-from .comparisons import get_comparison, get_all_comparisons, get_weekly_summary
+from .comparisons import get_comparison, get_all_comparisons, get_weekly_summary, get_bible_verse
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -59,7 +60,7 @@ async def async_setup_entry(
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="0.3.4-beta",
+        sw_version="0.4.0-beta",
     )
 
     sensors = [
@@ -76,6 +77,7 @@ async def async_setup_entry(
         PregnancyDueDateRangeSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyWeeklySummarySensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyMilestoneSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyBibleVerseSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
     ]
 
     async_add_entities(sensors)
@@ -687,4 +689,43 @@ class PregnancyMilestoneSensor(PregnancyTrackerSensorBase):
             "milestone_count": len(milestones_reached),
             "next_milestone": next_milestone,
             "weeks_to_next_milestone": next_milestone_weeks,
+        }
+
+
+class PregnancyBibleVerseSensor(PregnancyTrackerSensorBase):
+    """Sensor for weekly Bible verse."""
+
+    _attr_icon = "mdi:book-open-variant"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_BIBLE_VERSE}"
+        self._attr_name = "Bible Verse"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week)
+        return verse_data["text"]
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week)
+        return {
+            "week": week,
+            "reference": verse_data["reference"],
+            "text": verse_data["text"],
         }
