@@ -29,8 +29,12 @@ from .const import (
     SENSOR_TRIMESTER,
     SENSOR_STATUS,
     SENSOR_SIZE_COMPARISON,
+    SENSOR_COUNTDOWN,
+    SENSOR_DUE_DATE_RANGE,
+    SENSOR_WEEKLY_SUMMARY,
+    SENSOR_MILESTONE,
 )
-from .comparisons import get_comparison, get_all_comparisons
+from .comparisons import get_comparison, get_all_comparisons, get_weekly_summary
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -53,7 +57,7 @@ async def async_setup_entry(
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="0.2.0-beta",
+        sw_version="0.3.0-beta",
     )
 
     sensors = [
@@ -64,6 +68,10 @@ async def async_setup_entry(
         PregnancyTrimesterSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyStatusSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancySizeComparisonSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyCountdownSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyDueDateRangeSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyWeeklySummarySensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyMilestoneSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
     ]
 
     async_add_entities(sensors)
@@ -369,4 +377,230 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
             "veggie_emoji": comparisons["veggie"]["emoji"],
             "dad": comparisons["dad"]["label"],
             "dad_emoji": comparisons["dad"]["emoji"],
+        }
+
+
+class PregnancyCountdownSensor(PregnancyTrackerSensorBase):
+    """Sensor for countdown to due date."""
+
+    _attr_icon = "mdi:timer-outline"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_COUNTDOWN}"
+        self._attr_name = "Countdown"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor."""
+        values = self._calculate_values()
+        days_remaining = values["days_remaining"]
+        weeks_remaining = days_remaining // 7
+        days_in_week = days_remaining % 7
+        
+        if days_remaining < 0:
+            return f"Overdue by {abs(days_remaining)} days"
+        elif days_remaining == 0:
+            return "Due today!"
+        elif weeks_remaining == 0:
+            return f"{days_remaining} days"
+        else:
+            return f"{weeks_remaining}w {days_in_week}d"
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        days_remaining = values["days_remaining"]
+        
+        return {
+            "days_remaining": days_remaining,
+            "weeks_remaining": days_remaining // 7,
+            "days_in_week": days_remaining % 7,
+            "due_date": self._due_date.isoformat(),
+        }
+
+
+class PregnancyDueDateRangeSensor(PregnancyTrackerSensorBase):
+    """Sensor for due date range."""
+
+    _attr_icon = "mdi:calendar-range"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_DUE_DATE_RANGE}"
+        self._attr_name = "Due Date Range"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor."""
+        early_date = (self._due_date - timedelta(days=14)).strftime("%b %d")
+        late_date = (self._due_date + timedelta(days=14)).strftime("%b %d")
+        return f"{early_date} - {late_date}"
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        weeks = values["weeks_elapsed"]
+        
+        # Calculate term status
+        if weeks < 37:
+            term_status = "Preterm"
+        elif weeks < 39:
+            term_status = "Early term"
+        elif weeks < 41:
+            term_status = "Full term"
+        elif weeks < 42:
+            term_status = "Late term"
+        else:
+            term_status = "Post term"
+        
+        return {
+            "early_date": (self._due_date - timedelta(days=14)).isoformat(),
+            "due_date": self._due_date.isoformat(),
+            "late_date": (self._due_date + timedelta(days=14)).isoformat(),
+            "term_status": term_status,
+        }
+
+
+class PregnancyWeeklySummarySensor(PregnancyTrackerSensorBase):
+    """Sensor for weekly development summary."""
+
+    _attr_icon = "mdi:text-box-outline"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_WEEKLY_SUMMARY}"
+        self._attr_name = "Weekly Summary"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        return get_weekly_summary(week)
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        return {
+            "week": values["weeks_elapsed"],
+        }
+
+
+class PregnancyMilestoneSensor(PregnancyTrackerSensorBase):
+    """Sensor for pregnancy milestones."""
+
+    _attr_icon = "mdi:trophy-outline"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_MILESTONE}"
+        self._attr_name = "Milestone"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        
+        # Define milestones
+        if week >= 40:
+            return "Due date reached!"
+        elif week >= 37:
+            return "Full term"
+        elif week >= 27:
+            return "Third trimester"
+        elif week >= 24:
+            return "Viability"
+        elif week >= 13:
+            return "Second trimester"
+        elif week >= 5:
+            return "Heartbeat detected"
+        else:
+            return "Early pregnancy"
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        
+        # Track which milestones have been reached
+        milestones_reached = []
+        if week >= 5:
+            milestones_reached.append("Heartbeat detected (Week 5)")
+        if week >= 13:
+            milestones_reached.append("Second trimester (Week 13)")
+        if week >= 24:
+            milestones_reached.append("Viability (Week 24)")
+        if week >= 27:
+            milestones_reached.append("Third trimester (Week 27)")
+        if week >= 37:
+            milestones_reached.append("Full term (Week 37)")
+        if week >= 40:
+            milestones_reached.append("Due date (Week 40)")
+        
+        # Calculate next milestone
+        next_milestone = None
+        next_milestone_weeks = None
+        if week < 5:
+            next_milestone = "Heartbeat detected"
+            next_milestone_weeks = 5 - week
+        elif week < 13:
+            next_milestone = "Second trimester"
+            next_milestone_weeks = 13 - week
+        elif week < 24:
+            next_milestone = "Viability"
+            next_milestone_weeks = 24 - week
+        elif week < 27:
+            next_milestone = "Third trimester"
+            next_milestone_weeks = 27 - week
+        elif week < 37:
+            next_milestone = "Full term"
+            next_milestone_weeks = 37 - week
+        elif week < 40:
+            next_milestone = "Due date"
+            next_milestone_weeks = 40 - week
+        
+        return {
+            "week": week,
+            "milestones_reached": milestones_reached,
+            "milestone_count": len(milestones_reached),
+            "next_milestone": next_milestone,
+            "weeks_to_next_milestone": next_milestone_weeks,
         }

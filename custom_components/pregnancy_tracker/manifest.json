@@ -10,5 +10,5 @@
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/highergroundstudio/home-assistant-pregnancy-tracker/issues",
   "requirements": [],
-  "version": "0.2.0-beta"
+  "version": "0.3.0-beta"
 }
