@@ -60,6 +60,14 @@ Each sensor class overrides `native_value` and optionally `extra_state_attribute
 
 **No State Persistence**: All values recalculate from `date.today()` on each poll. No stored state means restarts have zero impact.
 
+## Version Bumps
+
+To release a new version:
+1. Update the `version` field in [manifest.json](custom_components/pregnancy_tracker/manifest.json).
+2. Keep `sw_version` in [sensor.py](custom_components/pregnancy_tracker/sensor.py) `DeviceInfo` in sync with the manifest version.
+3. Restart/reload the integration in Home Assistant so the new version is reflected.
+4. If using HACS releases, create a matching Git tag (e.g., `v0.x.y`) so HACS shows the semantic version instead of a commit hash.
+
 ## Common Tasks
 
 **Adding a new sensor**: Create a class in [sensor.py](custom_components/pregnancy_tracker/sensor.py), inherit from `PregnancyTrackerSensorBase`, implement `native_value` property, add to `async_setup_entry()` sensor list.
