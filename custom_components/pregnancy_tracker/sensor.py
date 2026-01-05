@@ -41,8 +41,9 @@ from .const import (
     SENSOR_WEEKLY_SUMMARY,
     SENSOR_MILESTONE,
     SENSOR_BIBLE_VERSE,
+    SENSOR_BIBLE_VERSE_REFERENCE,
 )
-from .comparisons import get_comparison, get_all_comparisons, get_weekly_summary, get_bible_verse
+from .comparisons import get_comparison, get_all_comparisons, get_weekly_summary, get_bible_verse, parse_bible_reference
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -68,7 +69,7 @@ async def async_setup_entry(
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="0.6.0-beta",
+        sw_version="0.7.0-beta",
     )
 
     sensors = [
@@ -86,6 +87,7 @@ async def async_setup_entry(
         PregnancyWeeklySummarySensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyMilestoneSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyBibleVerseSensor(config_entry, due_date, start_date, pregnancy_length, device_info, custom_bible_verses),
+        PregnancyBibleVerseReferenceSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
     ]
 
     async_add_entities(sensors)
@@ -739,4 +741,47 @@ class PregnancyBibleVerseSensor(PregnancyTrackerSensorBase):
             "reference": verse_data["reference"],
             "text": verse_data["text"],
             "custom_verses_enabled": bool(self._custom_bible_verses),
+        }
+
+
+class PregnancyBibleVerseReferenceSensor(PregnancyTrackerSensorBase):
+    """Sensor for Bible verse reference (book and chapter)."""
+
+    _attr_icon = "mdi:bookmark-outline"
+
+    def __init__(
+        self,
+        config_entry: ConfigEntry,
+        due_date: date,
+        start_date: date,
+        pregnancy_length: int,
+        device_info: DeviceInfo,
+    ) -> None:
+        """Initialize the sensor."""
+        super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
+        self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_BIBLE_VERSE_REFERENCE}"
+        self._attr_name = "Bible Verse Reference"
+
+    @property
+    def native_value(self) -> str:
+        """Return the state of the sensor (book and chapter)."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week)
+        reference_parts = parse_bible_reference(verse_data["reference"])
+        return reference_parts["book_and_chapter"]
+
+    @property
+    def extra_state_attributes(self) -> dict[str, Any]:
+        """Return additional attributes."""
+        values = self._calculate_values()
+        week = values["weeks_elapsed"]
+        verse_data = get_bible_verse(week)
+        reference_parts = parse_bible_reference(verse_data["reference"])
+        return {
+            "week": week,
+            "book": reference_parts["book"],
+            "chapter": reference_parts["chapter"],
+            "verse": reference_parts["verse"],
+            "full_reference": verse_data["reference"],
         }

@@ -244,6 +244,62 @@ def get_bible_verse(week: int, custom_path: str | None = None) -> dict[str, str]
     }
 
 
+def parse_bible_reference(reference: str) -> dict[str, str]:
+    """Parse a Bible verse reference into its components.
+    
+    Args:
+        reference: Bible reference like "Psalm 139:13" or "Numbers 6:24-25"
+    
+    Returns:
+        A dict with 'book', 'chapter', 'verse', and 'book_and_chapter' keys.
+    """
+    if not reference:
+        return {
+            "book": "",
+            "chapter": "",
+            "verse": "",
+            "book_and_chapter": "",
+        }
+    
+    # Split on the last colon to separate book+chapter from verse
+    parts = reference.rsplit(":", 1)
+    
+    if len(parts) == 2:
+        book_and_chapter = parts[0].strip()
+        verse = parts[1].strip()
+        
+        # Further split book_and_chapter on the last space to get book and chapter
+        book_chapter_parts = book_and_chapter.rsplit(" ", 1)
+        
+        if len(book_chapter_parts) == 2:
+            book = book_chapter_parts[0].strip()
+            chapter = book_chapter_parts[1].strip()
+        else:
+            # No space found, treat whole thing as book
+            book = book_and_chapter
+            chapter = ""
+    else:
+        # No colon found
+        book_and_chapter = reference.strip()
+        verse = ""
+        
+        # Try to split on last space
+        book_chapter_parts = book_and_chapter.rsplit(" ", 1)
+        if len(book_chapter_parts) == 2:
+            book = book_chapter_parts[0].strip()
+            chapter = book_chapter_parts[1].strip()
+        else:
+            book = book_and_chapter
+            chapter = ""
+    
+    return {
+        "book": book,
+        "chapter": chapter,
+        "verse": verse,
+        "book_and_chapter": book_and_chapter,
+    }
+
+
 def _load_custom_bible_verses(file_path: str) -> dict:
     """Load custom Bible verses from a JSON file.
     
