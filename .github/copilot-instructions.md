@@ -24,7 +24,7 @@ The config flow validates and stores three pieces of data:
 2. **`pregnancy_length`** (optional): Days (default: 280)
 3. **`comparison_mode`** (optional): `"veggie"` or `"dad"` (default: `"veggie"`)
 
-See [config_flow.py](custom_components/pregnancy_tracker/config_flow.py#L19-L32) for validation pattern. Unique IDs use `pregnancy_{due_date_str}` to prevent duplicates.
+See [config_flow.py](../custom_components/pregnancy_tracker/config_flow.py#L19-L32) for validation pattern. Unique IDs use `pregnancy_{due_date_str}` to prevent duplicates.
 
 ## Sensor Entities & Calculations
 
@@ -36,7 +36,7 @@ All seven sensors inherit from `PregnancyTrackerSensorBase` which computes:
 - `trimester`: 1 (weeks 0-12), 2 (weeks 13-26), 3 (weeks 27+)
 - `status`: "overdue" | "due_today" | "just_started" | "in_progress"
 
-See [sensor.py](custom_components/pregnancy_tracker/sensor.py#L89-L123) for `_calculate_values()` method.
+See [sensor.py](../custom_components/pregnancy_tracker/sensor.py#L89-L123) for `_calculate_values()` method.
 
 Each sensor class overrides `native_value` and optionally `extra_state_attributes`. Example:
 - `PregnancyWeeksSensor`: Returns `weeks_elapsed`; attributes include `days_into_week`
@@ -44,7 +44,7 @@ Each sensor class overrides `native_value` and optionally `extra_state_attribute
 
 ## Comparison System
 
-[comparisons.py](custom_components/pregnancy_tracker/comparisons.py) contains two dicts:
+[comparisons.py](../custom_components/pregnancy_tracker/comparisons.py) contains two dicts:
 - `VEGGIE_COMPARISONS`: Week 1-42 mapped to fruit/vegetable names
 - `DAD_COMPARISONS`: Week 1-42 mapped to "Dad's [item]" descriptions
 
@@ -70,19 +70,19 @@ To release a new version:
 
 ## Common Tasks
 
-**Adding a new sensor**: Create a class in [sensor.py](custom_components/pregnancy_tracker/sensor.py), inherit from `PregnancyTrackerSensorBase`, implement `native_value` property, add to `async_setup_entry()` sensor list.
+**Adding a new sensor**: Create a class in [sensor.py](../custom_components/pregnancy_tracker/sensor.py), inherit from `PregnancyTrackerSensorBase`, implement `native_value` property, add to `async_setup_entry()` sensor list.
 
-**Updating comparison data**: Edit the week-indexed dicts in [comparisons.py](custom_components/pregnancy_tracker/comparisons.py).
+**Updating comparison data**: Edit the week-indexed dicts in [comparisons.py](../custom_components/pregnancy_tracker/comparisons.py).
 
-**Changing defaults**: Update [const.py](custom_components/pregnancy_tracker/const.py) constants (e.g., `DEFAULT_PREGNANCY_LENGTH`, `DEFAULT_COMPARISON_MODE`).
+**Changing defaults**: Update [const.py](../custom_components/pregnancy_tracker/const.py) constants (e.g., `DEFAULT_PREGNANCY_LENGTH`, `DEFAULT_COMPARISON_MODE`).
 
-**Validation errors**: Config flow uses Home Assistant's `voluptuous` schema with `vol.In()`, `vol.Range()`, and custom error keys like `"due_date_past"` (resolved by [strings.json](custom_components/pregnancy_tracker/strings.json)).
+**Validation errors**: Config flow uses Home Assistant's `voluptuous` schema with `vol.In()`, `vol.Range()`, and custom error keys like `"due_date_past"` (resolved by [strings.json](../custom_components/pregnancy_tracker/strings.json)).
 
 ## Dependencies & Integration Points
 
 - **Home Assistant Core**: `homeassistant.components.sensor`, `config_entries`, `helpers.entity`
 - **External deps**: None (IoT class: `"calculated"`)
-- **Manifest**: [manifest.json](custom_components/pregnancy_tracker/manifest.json) defines domain, version (1.0.0), and platform (sensor)
+- **Manifest**: [manifest.json](../custom_components/pregnancy_tracker/manifest.json) defines domain, version (1.0.0), and platform (sensor)
 
 ## Testing & Validation
 
