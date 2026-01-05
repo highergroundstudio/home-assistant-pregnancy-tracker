@@ -117,6 +117,7 @@ This makes it easy to display text comparisons in Lovelace cards, and optionally
   * `week` - Current pregnancy week
   * `reference` - Bible verse reference (e.g., "Psalm 139:13")
   * `text` - Full verse text
+  * `custom_verses_enabled` - Whether custom verses are being used
 
 The verses change weekly based on your pregnancy progress, offering relevant encouragement and inspiration. Each verse has been selected to provide comfort, hope, and spiritual support during this special time.
 
@@ -124,6 +125,47 @@ The verses change weekly based on your pregnancy progress, offering relevant enc
 - Week 2: "For you created my inmost being; you knit me together in my mother's womb." - Psalm 139:13
 - Week 20: "You will go out in joy and be led forth in peace; the mountains and hills will burst into song before you." - Isaiah 55:12
 - Week 40: "For nothing is impossible with God." - Luke 1:37
+
+#### Customizing Bible Verses
+
+You can provide your own Bible verses by creating a JSON file and specifying its path in the integration configuration:
+
+**1. Create a custom verses file** (e.g., `/config/pregnancy_bible_verses.json`):
+
+```json
+{
+  "1": {
+    "text": "Your custom verse for week 1",
+    "reference": "Book Chapter:Verse"
+  },
+  "2": {
+    "text": "Your custom verse for week 2",
+    "reference": "Book Chapter:Verse"
+  },
+  "20": {
+    "text": "Every good gift and every perfect gift is from above.",
+    "reference": "James 1:17"
+  }
+}
+```
+
+**Notes:**
+- Week numbers should be strings (e.g., "1", "2", "20")
+- You only need to specify weeks you want to customize
+- Any week not in your custom file will use the default verse
+- Both `text` and `reference` fields are optional but recommended
+
+**2. Configure the integration:**
+- Go to **Settings → Devices & Services → Pregnancy Tracker**
+- Click **Configure** (or Options if already set up)
+- Enter the path to your custom verses file in **Custom Bible Verses File**
+  - Use relative path: `pregnancy_bible_verses.json` (will look in `/config/`)
+  - Or absolute path: `/config/my_custom_verses.json`
+- Click **Submit**
+
+The integration will reload and use your custom verses for the specified weeks!
+
+For a complete guide on customizing Bible verses, see **[CUSTOM_BIBLE_VERSES.md](CUSTOM_BIBLE_VERSES.md)**.
 
 ### Bible Verse Reference Sensor
 

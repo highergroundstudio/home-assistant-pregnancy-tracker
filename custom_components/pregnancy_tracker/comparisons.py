@@ -1,4 +1,10 @@
 """Size comparison data for pregnancy tracker."""
+import json
+import logging
+import os
+from pathlib import Path
+
+_LOGGER = logging.getLogger(__name__)
 
 # Week-by-week comparisons (weeks 1-42)
 COMPARISONS = {
@@ -200,14 +206,37 @@ BIBLE_VERSES = {
 }
 
 
-def get_bible_verse(week: int) -> dict[str, str]:
+def get_bible_verse(week: int, custom_path: str | None = None) -> dict[str, str]:
     """Get Bible verse for a given week.
+    
+    Args:
+        week: The pregnancy week (1-42)
+        custom_path: Optional path to custom Bible verses JSON file
     
     Returns a dict with 'text' and 'reference' keys.
     """
     if week < 1 or week > 42:
         week = max(1, min(42, week))
     
+    # Try to load custom verses if path is provided
+    if custom_path:
+        custom_verses = _load_custom_bible_verses(custom_path)
+        if custom_verses and str(week) in custom_verses:
+            custom_data = custom_verses[str(week)]
+            # Support both full dict format and simple text format
+            if isinstance(custom_data, dict):
+                return {
+                    "text": custom_data.get("text", ""),
+                    "reference": custom_data.get("reference", ""),
+                }
+            elif isinstance(custom_data, str):
+                # If only text is provided, reference will be empty
+                return {
+                    "text": custom_data,
+                    "reference": "",
+                }
+    
+    # Fall back to default verses
     verse_data = BIBLE_VERSES.get(week, {})
     return {
         "text": verse_data.get("text", ""),
@@ -269,3 +298,72 @@ def parse_bible_reference(reference: str) -> dict[str, str]:
         "verse": verse,
         "book_and_chapter": book_and_chapter,
     }
+
+
+def _load_custom_bible_verses(file_path: str) -> dict:
+    """Load custom Bible verses from a JSON file.
+    
+    Args:
+        file_path: Path to the JSON file containing custom verses
+        
+    Returns:
+        Dictionary with week numbers as keys and verse data as values,
+        or empty dict if file cannot be loaded.
+    """
+    try:
+        # Handle both absolute and relative paths
+        path = Path(file_path)
+        
+        # If path is relative, try to resolve it from common Home Assistant locations
+        if not path.is_absolute():
+            # Try current directory first (for testing)
+            if path.exists():
+                pass  # Use the path as is
+            # Try /config directory (standard Home Assistant config directory)
+            elif (Path("/config") / file_path).exists():
+                path = Path("/config") / file_path
+            else:
+                _LOGGER.warning(
+                    "Custom Bible verses file not found at relative path: %s", 
+                    file_path
+                )
+                return {}
+        
+        if not path.exists():
+            _LOGGER.warning(
+                "Custom Bible verses file not found: %s", 
+                path
+            )
+            return {}
+        
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            
+        # Validate the structure
+        if not isinstance(data, dict):
+            _LOGGER.error(
+                "Custom Bible verses file has invalid format. Expected a dictionary."
+            )
+            return {}
+        
+        _LOGGER.info(
+            "Successfully loaded %d custom Bible verses from %s", 
+            len(data), 
+            path
+        )
+        return data
+        
+    except json.JSONDecodeError as err:
+        _LOGGER.error(
+            "Failed to parse custom Bible verses JSON file %s: %s",
+            file_path,
+            err
+        )
+        return {}
+    except Exception as err:
+        _LOGGER.error(
+            "Failed to load custom Bible verses from %s: %s",
+            file_path,
+            err
+        )
+        return {}

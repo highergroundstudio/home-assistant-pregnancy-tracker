@@ -18,6 +18,7 @@ from .const import (
     CONF_DUE_DATE,
     CONF_PREGNANCY_LENGTH,
     CONF_COMPARISON_MODE,
+    CONF_CUSTOM_BIBLE_VERSES,
     DEFAULT_PREGNANCY_LENGTH,
     DEFAULT_COMPARISON_MODE,
     COMPARISON_MODE_VEGGIE,
@@ -65,6 +66,9 @@ class PregnancyTrackerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             CONF_PREGNANCY_LENGTH: user_input.get(
                                 CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH
                             ),
+                            CONF_CUSTOM_BIBLE_VERSES: user_input.get(
+                                CONF_CUSTOM_BIBLE_VERSES, ""
+                            ),
                         },
                     )
             except ValueError:
@@ -78,6 +82,11 @@ class PregnancyTrackerConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ): selector.NumberSelector(
                     selector.NumberSelectorConfig(
                         min=1, max=365, mode=selector.NumberSelectorMode.BOX
+                    )
+                ),
+                vol.Optional(CONF_CUSTOM_BIBLE_VERSES, default=""): selector.TextSelector(
+                    selector.TextSelectorConfig(
+                        multiline=False,
                     )
                 ),
             }
@@ -119,6 +128,9 @@ class PregnancyTrackerOptionsFlow(config_entries.OptionsFlow):
                         CONF_PREGNANCY_LENGTH: user_input.get(
                             CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH
                         ),
+                        CONF_CUSTOM_BIBLE_VERSES: user_input.get(
+                            CONF_CUSTOM_BIBLE_VERSES, ""
+                        ),
                     },
                     title=f"Pregnancy Tracker ({due_date_str})",
                 )
@@ -136,6 +148,9 @@ class PregnancyTrackerOptionsFlow(config_entries.OptionsFlow):
         current_pregnancy_length = self.config_entry.data.get(
             CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH
         )
+        current_custom_bible_verses = self.config_entry.data.get(
+            CONF_CUSTOM_BIBLE_VERSES, ""
+        )
 
         data_schema = vol.Schema(
             {
@@ -145,6 +160,13 @@ class PregnancyTrackerOptionsFlow(config_entries.OptionsFlow):
                 ): selector.NumberSelector(
                     selector.NumberSelectorConfig(
                         min=1, max=365, mode=selector.NumberSelectorMode.BOX
+                    )
+                ),
+                vol.Optional(
+                    CONF_CUSTOM_BIBLE_VERSES, default=current_custom_bible_verses
+                ): selector.TextSelector(
+                    selector.TextSelectorConfig(
+                        multiline=False,
                     )
                 ),
             }
