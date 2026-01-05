@@ -26,7 +26,7 @@ This integration creates **7 sensors** to track your pregnancy:
 
 ## Fun Size Comparisons
 
-Choose between two comparison modes:
+Choose between two comparison modes, **with bundled images**:
 
 ### 🥬 Veggie Mode
 Classic fruit and vegetable comparisons
@@ -39,6 +39,8 @@ Items dads can relate to
 - Week 8: Dad's golf tee
 - Week 20: Dad's laptop charger
 - Week 40: Dad's grill
+
+**All 42 weeks include professionally designed comparison images that are automatically installed!**
 
 ## Easy Setup
 

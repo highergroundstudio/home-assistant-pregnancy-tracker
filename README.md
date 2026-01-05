@@ -87,13 +87,25 @@ This makes it easy to display text *and* images in Lovelace cards.
 
 ## Comparison Modes
 
-### Veggie Mode
+The integration includes **bundled comparison images** for both Veggie and Dad modes! Images are automatically copied to your `/config/www/pregnancy_tracker/` directory on setup.
+
+### 🥬 Veggie Mode
 
 Baby size compared to fruits and vegetables by week.
+- Week 8: Raspberry
+- Week 20: Banana  
+- Week 40: Small pumpkin
 
-### Dad Mode
+**Includes 42 weeks of veggie images!**
+
+### 👨 Dad Mode
 
 Baby size compared to everyday and garage items (tools, sports gear, etc.).
+- Week 8: Dad's golf tee
+- Week 20: Dad's laptop charger
+- Week 40: Dad's grill
+
+**Includes 42 weeks of dad images!**
 
 ### Custom Mode
 
@@ -111,6 +123,8 @@ Create a file like:
 ```
 
 Then enable **Custom Mode** in the integration options.
+
+**Note:** You can override the bundled images by placing your own images at `/config/www/pregnancy_tracker/{mode}/week_{week}.png`
 
 ---
 
