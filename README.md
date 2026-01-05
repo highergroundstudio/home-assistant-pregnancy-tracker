@@ -1,7 +1,3 @@
-Below is a **clean, HACS-ready `README.md`** you can drop directly into the repo. It is written to Home Assistant community norms, clear for non-technical users, and credible for maintainers.
-
----
-
 # Home Assistant Pregnancy Tracker (Beta)
 
 > **⚠️ Beta Status**: This integration is currently in beta. Expect potential breaking changes and limited real-world testing. Please report issues on GitHub!
