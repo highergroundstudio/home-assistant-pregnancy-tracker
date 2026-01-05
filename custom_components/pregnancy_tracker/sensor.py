@@ -1,4 +1,8 @@
-"""Sensor platform for Pregnancy Tracker integration."""
+"""Sensor platform for Pregnancy Tracker integration.
+
+This integration has been developed with assistance from GitHub Copilot,
+which has helped in code generation, improvements, and maintenance.
+"""
 from __future__ import annotations
 
 import logging
@@ -55,12 +59,14 @@ async def async_setup_entry(
     start_date = due_date - timedelta(days=pregnancy_length)
 
     # Create device info for grouping sensors
+    # Note: sw_version must match the version in manifest.json
+    # After updating the version, users should restart Home Assistant or reload the integration
     device_info = DeviceInfo(
         identifiers={(DOMAIN, config_entry.entry_id)},
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="0.4.0-beta",
+        sw_version="0.5.0-beta",
     )
 
     sensors = [
