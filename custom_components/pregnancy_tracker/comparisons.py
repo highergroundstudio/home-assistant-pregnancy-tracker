@@ -36,7 +36,7 @@ VEGGIE_COMPARISONS = {
     32: "Jicama",
     33: "Pineapple",
     34: "Honeydew melon",
-    35: "Honeydew melon",
+    35: "Large honeydew melon",
     36: "Romaine lettuce",
     37: "Swiss chard",
     38: "Leek",

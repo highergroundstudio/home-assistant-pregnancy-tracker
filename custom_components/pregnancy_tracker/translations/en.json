@@ -12,7 +12,7 @@
       }
     },
     "error": {
-      "due_date_past": "Due date must be in the future",
+      "due_date_past": "Due date cannot be in the past",
       "invalid_date": "Invalid date format. Please use YYYY-MM-DD"
     },
     "abort": {
