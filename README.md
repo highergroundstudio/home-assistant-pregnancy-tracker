@@ -304,6 +304,16 @@ Contributions are welcome:
 
 Please open an issue or pull request.
 
+### Development and Testing
+
+This repository includes automated testing and quality assurance via GitHub Actions:
+
+* **Test Suite**: Runs on Python 3.9, 3.10, 3.11, and 3.12
+* **Code Quality**: Automated linting with flake8, Black, and isort
+* **Validation**: JSON structure validation for manifest and strings files
+
+The workflow runs automatically on push and pull requests to `main` and `develop` branches. All checks must pass before merging.
+
 **Note**: This integration has been developed with assistance from GitHub Copilot, which has helped in code generation, improvements, and maintenance throughout the development process.
 
 ---
