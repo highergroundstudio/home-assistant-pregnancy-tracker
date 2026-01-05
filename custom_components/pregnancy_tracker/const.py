@@ -7,6 +7,7 @@ CONF_DUE_DATE = "due_date"
 CONF_PREGNANCY_LENGTH = "pregnancy_length"
 CONF_COMPARISON_MODE = "comparison_mode"
 CONF_CUSTOM_COMPARISONS = "custom_comparisons"  # For advanced users (manual config only)
+CONF_CUSTOM_BIBLE_VERSES = "custom_bible_verses"  # Path to custom Bible verses JSON file
 
 # Default values
 DEFAULT_PREGNANCY_LENGTH = 280

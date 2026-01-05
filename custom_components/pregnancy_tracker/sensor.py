@@ -24,6 +24,7 @@ from .const import (
     CONF_DUE_DATE,
     CONF_PREGNANCY_LENGTH,
     CONF_COMPARISON_MODE,
+    CONF_CUSTOM_BIBLE_VERSES,
     DEFAULT_PREGNANCY_LENGTH,
     DEFAULT_COMPARISON_MODE,
     SENSOR_WEEKS,
@@ -54,6 +55,7 @@ async def async_setup_entry(
     """Set up Pregnancy Tracker sensors from a config entry."""
     due_date_str = config_entry.data[CONF_DUE_DATE]
     pregnancy_length = config_entry.data.get(CONF_PREGNANCY_LENGTH, DEFAULT_PREGNANCY_LENGTH)
+    custom_bible_verses = config_entry.data.get(CONF_CUSTOM_BIBLE_VERSES, "")
 
     due_date = datetime.strptime(due_date_str, "%Y-%m-%d").date()
     start_date = due_date - timedelta(days=pregnancy_length)
@@ -66,7 +68,7 @@ async def async_setup_entry(
         name=f"Pregnancy Tracker {due_date_str}",
         manufacturer="Higher Ground Studio",
         model="Pregnancy Tracker",
-        sw_version="0.5.0-beta",
+        sw_version="0.6.0-beta",
     )
 
     sensors = [
@@ -83,7 +85,7 @@ async def async_setup_entry(
         PregnancyDueDateRangeSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyWeeklySummarySensor(config_entry, due_date, start_date, pregnancy_length, device_info),
         PregnancyMilestoneSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
-        PregnancyBibleVerseSensor(config_entry, due_date, start_date, pregnancy_length, device_info),
+        PregnancyBibleVerseSensor(config_entry, due_date, start_date, pregnancy_length, device_info, custom_bible_verses),
     ]
 
     async_add_entities(sensors)
@@ -710,18 +712,20 @@ class PregnancyBibleVerseSensor(PregnancyTrackerSensorBase):
         start_date: date,
         pregnancy_length: int,
         device_info: DeviceInfo,
+        custom_bible_verses: str = "",
     ) -> None:
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_BIBLE_VERSE}"
         self._attr_name = "Bible Verse"
+        self._custom_bible_verses = custom_bible_verses
 
     @property
     def native_value(self) -> str:
         """Return the state of the sensor."""
         values = self._calculate_values()
         week = values["weeks_elapsed"]
-        verse_data = get_bible_verse(week)
+        verse_data = get_bible_verse(week, self._custom_bible_verses if self._custom_bible_verses else None)
         return verse_data["text"]
 
     @property
@@ -729,9 +733,10 @@ class PregnancyBibleVerseSensor(PregnancyTrackerSensorBase):
         """Return additional attributes."""
         values = self._calculate_values()
         week = values["weeks_elapsed"]
-        verse_data = get_bible_verse(week)
+        verse_data = get_bible_verse(week, self._custom_bible_verses if self._custom_bible_verses else None)
         return {
             "week": week,
             "reference": verse_data["reference"],
             "text": verse_data["text"],
+            "custom_verses_enabled": bool(self._custom_bible_verses),
         }
