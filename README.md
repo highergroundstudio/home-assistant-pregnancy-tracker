@@ -27,13 +27,26 @@ No cloud services. No external APIs. All data stays inside your Home Assistant i
 
 ---
 
-## Installation (HACS)
+## Installation
+
+### Option 1: HACS Store (Recommended)
+
+This integration is now available directly in the HACS store!
+
+1. Open **HACS**
+2. Go to **Integrations**
+3. Search for **Pregnancy Tracker**
+4. Click **Download**
+5. Restart Home Assistant
+
+### Option 2: Custom Repository
+
+Alternatively, you can add it as a custom repository:
 
 1. Open **HACS**
 2. Go to **Integrations**
 3. Click the three-dot menu → **Custom repositories**
 4. Add this repository URL
-
    * Category: **Integration**
 5. Search for **Pregnancy Tracker** and install
 6. Restart Home Assistant
