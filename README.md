@@ -78,22 +78,23 @@ No YAML configuration required.
 
 The integration creates the following sensors:
 
-| Entity                                  | Description                           |
-| --------------------------------------- | ------------------------------------- |
-| `sensor.pregnancy_weeks`                | Current pregnancy week                |
-| `sensor.pregnancy_days`                 | Days elapsed                          |
-| `sensor.pregnancy_days_remaining`       | Countdown to due date                 |
-| `sensor.pregnancy_percent`              | Percent complete                      |
-| `sensor.pregnancy_trimester`            | First / Second / Third                |
-| `sensor.pregnancy_status`               | Human-readable summary                |
-| `sensor.pregnancy_size_comparison`      | Veggie size comparison                |
-| `sensor.pregnancy_dad_size_comparison`  | Dad mode size comparison              |
-| `sensor.pregnancy_size_comparison_image`| Image URLs for comparisons            |
-| `sensor.pregnancy_countdown`            | Countdown in weeks and days format    |
-| `sensor.pregnancy_due_date_range`       | Due date range with term status       |
-| `sensor.pregnancy_weekly_summary`       | Baby development summary              |
-| `sensor.pregnancy_milestone`            | Pregnancy milestones tracker          |
-| `sensor.pregnancy_bible_verse`          | Weekly Bible verse for encouragement  |
+| Entity                                       | Description                           |
+| -------------------------------------------- | ------------------------------------- |
+| `sensor.pregnancy_weeks`                     | Current pregnancy week                |
+| `sensor.pregnancy_days`                      | Days elapsed                          |
+| `sensor.pregnancy_days_remaining`            | Countdown to due date                 |
+| `sensor.pregnancy_percent`                   | Percent complete                      |
+| `sensor.pregnancy_trimester`                 | First / Second / Third                |
+| `sensor.pregnancy_status`                    | Human-readable summary                |
+| `sensor.pregnancy_size_comparison`           | Veggie size comparison                |
+| `sensor.pregnancy_dad_size_comparison`       | Dad mode size comparison              |
+| `sensor.pregnancy_size_comparison_image`     | Image URLs for comparisons            |
+| `sensor.pregnancy_countdown`                 | Countdown in weeks and days format    |
+| `sensor.pregnancy_due_date_range`            | Due date range with term status       |
+| `sensor.pregnancy_weekly_summary`            | Baby development summary              |
+| `sensor.pregnancy_milestone`                 | Pregnancy milestones tracker          |
+| `sensor.pregnancy_bible_verse`               | Weekly Bible verse for encouragement  |
+| `sensor.pregnancy_bible_verse_reference`     | Bible verse book and chapter          |
 
 ### Size Comparison Sensor Attributes
 
@@ -165,6 +166,25 @@ You can provide your own Bible verses by creating a JSON file and specifying its
 The integration will reload and use your custom verses for the specified weeks!
 
 For a complete guide on customizing Bible verses, see **[CUSTOM_BIBLE_VERSES.md](CUSTOM_BIBLE_VERSES.md)**.
+
+### Bible Verse Reference Sensor
+
+`sensor.pregnancy_bible_verse_reference` provides the book and chapter information separately from the verse text, offering more flexibility in how you display Bible verse information:
+
+* **Weekly references**: Changes weekly based on pregnancy progress
+* **State**: The book and chapter (e.g., "Psalm 139")
+* **Attributes**:
+  * `week` - Current pregnancy week
+  * `book` - Bible book name (e.g., "Psalm")
+  * `chapter` - Chapter number(s) (e.g., "139")
+  * `verse` - Verse number(s) (e.g., "13")
+  * `full_reference` - Complete reference (e.g., "Psalm 139:13")
+
+This sensor is particularly useful when you want to:
+- Display just the book and chapter in your dashboard
+- Create automations based on specific books of the Bible
+- Build custom cards that format the reference differently
+- Reference the scripture location without showing the full text
 
 ---
 
@@ -270,6 +290,27 @@ type: entity
 entity: sensor.pregnancy_bible_verse
 ```
 
+### Bible Verse Reference Card Example
+
+Display just the Bible reference with book and chapter:
+
+```yaml
+type: entity
+entity: sensor.pregnancy_bible_verse_reference
+```
+
+Or create a custom card that combines both sensors:
+
+```yaml
+type: markdown
+content: >
+  ## 📖 {{ states('sensor.pregnancy_bible_verse_reference') }}
+
+  *{{ state_attr('sensor.pregnancy_bible_verse_reference', 'book') }} {{ state_attr('sensor.pregnancy_bible_verse_reference', 'chapter') }}:{{ state_attr('sensor.pregnancy_bible_verse_reference', 'verse') }}*
+  
+  {{ states('sensor.pregnancy_bible_verse') }}
+```
+
 **Note**: The integration provides text-based size comparisons by default. Images are **not included** but can be optionally added by placing your own images at `/config/www/pregnancy_tracker/{mode}/week_{number}.png`. The `sensor.pregnancy_size_comparison` entity includes an `image` attribute with the path where images would be located if you add them.
 
 No custom Lovelace cards required.
@@ -304,6 +345,16 @@ Contributions are welcome:
 * Bug fixes and enhancements
 
 Please open an issue or pull request.
+
+### Development and Testing
+
+This repository includes automated testing and quality assurance via GitHub Actions:
+
+* **Test Suite**: Runs on Python 3.9, 3.10, 3.11, and 3.12
+* **Code Quality**: Automated linting with flake8, Black, and isort
+* **Validation**: JSON structure validation for manifest and strings files
+
+The workflow runs automatically on push and pull requests to `main` and `develop` branches. All checks must pass before merging.
 
 **Note**: This integration has been developed with assistance from GitHub Copilot, which has helped in code generation, improvements, and maintenance throughout the development process.
 
