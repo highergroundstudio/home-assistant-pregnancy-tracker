@@ -1,0 +1,2 @@
+# This Home Assistant custom integration has no external dependencies.
+# All required functionality is provided by Home Assistant core.
