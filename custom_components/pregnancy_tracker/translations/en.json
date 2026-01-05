@@ -17,5 +17,20 @@
     "abort": {
       "already_configured": "This pregnancy tracker is already configured"
     }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Update Pregnancy Tracker",
+        "description": "Update your due date or pregnancy length. Current due date: {current_due_date}",
+        "data": {
+          "due_date": "Due Date",
+          "pregnancy_length": "Pregnancy Length (days)"
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Invalid date format. Please use YYYY-MM-DD"
+    }
   }
 }
