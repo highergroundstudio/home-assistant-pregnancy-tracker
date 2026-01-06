@@ -1,0 +1,245 @@
+# Pregnancy Tracker Dashboard Example
+# Copy this YAML into your Home Assistant dashboard (lovelace UI)
+# Replace "ENTRY_ID" with your actual pregnancy tracker entry ID
+# You can find entity IDs by going to Settings > Devices & Services > Pregnancy Tracker
+
+# Option 1: Full Dashboard View
+# Create a new dashboard view and paste this entire configuration
+
+title: Pregnancy Tracker
+path: pregnancy
+icon: mdi:baby-face-outline
+badges: []
+cards:
+  # Hero Section - Current Week & Progress
+  - type: vertical-stack
+    cards:
+      - type: custom:mushroom-title-card
+        title: Week {{ states('sensor.pregnancy_tracker_ENTRY_ID_weeks') }}
+        subtitle: "{{ states('sensor.pregnancy_tracker_ENTRY_ID_trimester') | replace('1', 'First Trimester') | replace('2', 'Second Trimester') | replace('3', 'Third Trimester') }}"
+      
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.pregnancy_tracker_ENTRY_ID_percent
+            name: Progress
+            min: 0
+            max: 100
+            severity:
+              green: 70
+              yellow: 40
+              red: 0
+          
+          - type: statistic
+            entity: sensor.pregnancy_tracker_ENTRY_ID_countdown
+            name: Countdown
+            icon: mdi:timer-outline
+  
+  # Size Comparisons with Images
+  - type: vertical-stack
+    cards:
+      - type: markdown
+        content: |
+          ## Baby's Size This Week
+          
+      - type: horizontal-stack
+        cards:
+          # Veggie Comparison
+          - type: custom:button-card
+            entity: sensor.pregnancy_tracker_ENTRY_ID_size_comparison
+            name: Veggie Size
+            show_state: true
+            show_icon: false
+            styles:
+              card:
+                - height: 200px
+              img_cell:
+                - height: 140px
+              state:
+                - font-size: 16px
+                - font-weight: bold
+            custom_fields:
+              image: |
+                [[[
+                  const image = states['sensor.pregnancy_tracker_ENTRY_ID_size_comparison_image'].attributes.veggie_image;
+                  if (image) {
+                    return `<img src="${image}" style="width: 120px; height: 120px; object-fit: contain;">`;
+                  }
+                  return '';
+                ]]]
+          
+          # Dad Comparison
+          - type: custom:button-card
+            entity: sensor.pregnancy_tracker_ENTRY_ID_dad_size_comparison
+            name: Dad Size
+            show_state: true
+            show_icon: false
+            styles:
+              card:
+                - height: 200px
+              img_cell:
+                - height: 140px
+              state:
+                - font-size: 16px
+                - font-weight: bold
+            custom_fields:
+              image: |
+                [[[
+                  const image = states['sensor.pregnancy_tracker_ENTRY_ID_size_comparison_image'].attributes.dad_image;
+                  if (image) {
+                    return `<img src="${image}" style="width: 120px; height: 120px; object-fit: contain;">`;
+                  }
+                  return '';
+                ]]]
+  
+  # Quick Stats Grid
+  - type: grid
+    columns: 3
+    square: false
+    cards:
+      - type: entity
+        entity: sensor.pregnancy_tracker_ENTRY_ID_weeks
+        name: Weeks
+        icon: mdi:calendar-week
+      
+      - type: entity
+        entity: sensor.pregnancy_tracker_ENTRY_ID_days_elapsed
+        name: Days So Far
+        icon: mdi:calendar-check
+      
+      - type: entity
+        entity: sensor.pregnancy_tracker_ENTRY_ID_days_remaining
+        name: Days Left
+        icon: mdi:calendar-clock
+      
+      - type: entity
+        entity: sensor.pregnancy_tracker_ENTRY_ID_trimester
+        name: Trimester
+        icon: mdi:numeric
+      
+      - type: entity
+        entity: sensor.pregnancy_tracker_ENTRY_ID_status
+        name: Status
+        icon: mdi:information
+      
+      - type: entity
+        entity: sensor.pregnancy_tracker_ENTRY_ID_due_date_range
+        name: Due Date Range
+        icon: mdi:calendar-range
+  
+  # Weekly Development Summary
+  - type: markdown
+    content: |
+      ## This Week's Development
+      {{ states('sensor.pregnancy_tracker_ENTRY_ID_weekly_summary') }}
+  
+  # Milestone Card
+  - type: custom:mushroom-chips-card
+    chips:
+      - type: entity
+        entity: sensor.pregnancy_tracker_ENTRY_ID_milestone
+        icon: mdi:trophy-outline
+        content_info: name
+  
+  # Bible Verse of the Week
+  - type: markdown
+    content: |
+      ## Verse of the Week
+      
+      *{{ states('sensor.pregnancy_tracker_ENTRY_ID_bible_verse') }}*
+      
+      **— {{ states('sensor.pregnancy_tracker_ENTRY_ID_bible_verse_reference') }}**
+
+---
+
+# Option 2: Simple Card Stack (for adding to existing dashboard)
+# Add this to any existing dashboard view
+
+- type: vertical-stack
+  cards:
+    - type: entities
+      title: Pregnancy Progress
+      entities:
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_weeks
+          name: Current Week
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_countdown
+          name: Time Remaining
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_percent
+          name: Progress
+        - type: divider
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_size_comparison
+          name: Size (Veggie)
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_dad_size_comparison
+          name: Size (Dad)
+    
+    - type: markdown
+      content: |
+        **This Week:** {{ states('sensor.pregnancy_tracker_ENTRY_ID_weekly_summary') }}
+
+---
+
+# Option 3: Minimal Dashboard (no custom cards required)
+
+- type: vertical-stack
+  cards:
+    # Header
+    - type: markdown
+      content: |
+        # 🤰 Pregnancy Tracker
+        ## Week {{ states('sensor.pregnancy_tracker_ENTRY_ID_weeks') }} • {{ states('sensor.pregnancy_tracker_ENTRY_ID_countdown') }}
+    
+    # Progress Bar
+    - type: entity
+      entity: sensor.pregnancy_tracker_ENTRY_ID_percent
+      name: Progress
+    
+    # Stats Grid
+    - type: glance
+      entities:
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_weeks
+          name: Week
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_trimester
+          name: Trimester
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_days_remaining
+          name: Days Left
+    
+    # Size Comparison
+    - type: entities
+      title: Baby's Size
+      entities:
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_size_comparison
+          name: Veggie
+          icon: mdi:food-apple
+        - entity: sensor.pregnancy_tracker_ENTRY_ID_dad_size_comparison
+          name: Dad
+          icon: mdi:account
+    
+    # Weekly Info
+    - type: markdown
+      title: This Week
+      content: |
+        {{ states('sensor.pregnancy_tracker_ENTRY_ID_weekly_summary') }}
+    
+    # Milestone
+    - type: entity
+      entity: sensor.pregnancy_tracker_ENTRY_ID_milestone
+      name: Current Milestone
+    
+    # Bible Verse
+    - type: markdown
+      title: Verse of the Week
+      content: |
+        *{{ states('sensor.pregnancy_tracker_ENTRY_ID_bible_verse') }}*
+        
+        — {{ states('sensor.pregnancy_tracker_ENTRY_ID_bible_verse_reference') }}
+
+---
+
+# Notes:
+# 1. Replace "ENTRY_ID" with your actual entry ID (find in Developer Tools > States)
+# 2. Option 1 requires custom cards (Mushroom, Button Card) for best appearance
+#    Install via HACS: https://github.com/piitaya/lovelace-mushroom
+#                      https://github.com/custom-cards/button-card
+# 3. Option 2 uses basic cards with some custom styling
+# 4. Option 3 works with Home Assistant's built-in cards only
+# 5. For images to work, make sure images are in /config/www/pregnancy_tracker/
