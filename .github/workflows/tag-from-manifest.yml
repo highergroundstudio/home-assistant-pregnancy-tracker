@@ -1,0 +1,57 @@
+name: Tag from manifest version
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - custom_components/pregnancy_tracker/manifest.json
+  workflow_dispatch:
+
+jobs:
+  tag_version:
+    name: Create tag v<manifest version>
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from manifest
+        id: version
+        shell: bash
+        run: |
+          VERSION=$(python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = Path("custom_components/pregnancy_tracker/manifest.json")
+          data = json.loads(manifest.read_text(encoding="utf-8"))
+          print(data.get("version", ""))
+          PY
+          )
+          if [ -z "$VERSION" ]; then
+            echo "Version not found in manifest" >&2
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Tag and push if missing
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          git fetch --tags
+          if git rev-parse "v$VERSION" >/dev/null 2>&1; then
+            echo "Tag v$VERSION already exists; skipping."
+            exit 0
+          fi
+          git tag "v$VERSION"
+          git push origin "v$VERSION"
+          echo "Created and pushed tag v$VERSION"
