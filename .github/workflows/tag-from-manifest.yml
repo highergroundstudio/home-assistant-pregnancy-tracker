@@ -9,7 +9,7 @@ on:
 
 jobs:
   tag_version:
-    name: Create tag v<manifest version>
+    name: Create tag and release v<manifest version>
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -42,16 +42,31 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Tag and push if missing
+      - name: Tag and create release if missing
         env:
           VERSION: ${{ steps.version.outputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         shell: bash
         run: |
           git fetch --tags
+
           if git rev-parse "v$VERSION" >/dev/null 2>&1; then
-            echo "Tag v$VERSION already exists; skipping."
-            exit 0
+            echo "Tag v$VERSION already exists."
+          else
+            git tag "v$VERSION"
+            git push origin "v$VERSION"
+            echo "Created and pushed tag v$VERSION"
           fi
-          git tag "v$VERSION"
-          git push origin "v$VERSION"
-          echo "Created and pushed tag v$VERSION"
+
+          # Create a GitHub Release so HACS shows the version number (not commit SHA)
+          if gh release view "v$VERSION" >/dev/null 2>&1; then
+            echo "Release v$VERSION already exists; skipping."
+          else
+            gh release create "v$VERSION" \
+              --title "v$VERSION" \
+              --notes "Release v$VERSION of Pregnancy Tracker.
+
+See the [changelog](https://github.com/highergroundstudio/home-assistant-pregnancy-tracker/commits/v$VERSION) for changes." \
+              --latest
+            echo "Created GitHub Release v$VERSION"
+          fi
