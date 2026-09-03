@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configurar Acompanhamento da gravidez",
+        "description": "Configure o acompanhamento da gravidez. As comparações de tamanho de vegetais e de papai estarão disponíveis.",
+        "data": {
+          "due_date": "Data prevista do parto",
+          "pregnancy_length": "Duração da gravidez (dias)",
+          "custom_bible_verses": "Arquivo de versículos bíblicos personalizados (opcional)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Caminho para um arquivo JSON com versículos bíblicos personalizados (ex.: pregnancy_bible_verses.json ou /config/my_verses.json). Deixe em branco para usar os versículos padrão."
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "A data prevista não pode estar no passado",
+      "invalid_date": "Formato de data inválido. Use AAAA-MM-DD"
+    },
+    "abort": {
+      "already_configured": "Este acompanhamento da gravidez já está configurado"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Atualizar Acompanhamento da gravidez",
+        "description": "Atualize a data prevista ou a duração da gravidez. Data prevista atual: {current_due_date}",
+        "data": {
+          "due_date": "Data prevista do parto",
+          "pregnancy_length": "Duração da gravidez (dias)",
+          "custom_bible_verses": "Arquivo de versículos bíblicos personalizados (opcional)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Caminho para um arquivo JSON com versículos bíblicos personalizados. Deixe em branco para usar os versículos padrão."
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Formato de data inválido. Use AAAA-MM-DD"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "weeks": {"name": "Semanas"},
+      "days_elapsed": {"name": "Dias decorridos"},
+      "days_remaining": {"name": "Dias restantes"},
+      "percent": {"name": "Percentual concluído"},
+      "trimester": {"name": "Trimestre"},
+      "status": {"name": "Status"},
+      "size_comparison": {"name": "Comparação de tamanho"},
+      "dad_size_comparison": {"name": "Comparação de tamanho papai"},
+      "size_comparison_image": {"name": "Imagem da comparação de tamanho"},
+      "countdown": {"name": "Contagem regressiva"},
+      "due_date_range": {"name": "Intervalo da data prevista"},
+      "weekly_summary": {"name": "Resumo semanal"},
+      "milestone": {"name": "Marco"},
+      "bible_verse": {"name": "Versículo bíblico"},
+      "bible_verse_reference": {"name": "Referência do versículo"}
+    }
+  }
+}
