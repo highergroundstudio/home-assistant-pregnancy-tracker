@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Skonfiguruj Śledzenie ciąży",
+        "description": "Skonfiguruj śledzenie ciąży. Dostępne będą porównania rozmiaru warzyw i taty.",
+        "data": {
+          "due_date": "Przewidywany termin porodu",
+          "pregnancy_length": "Długość ciąży (dni)",
+          "custom_bible_verses": "Plik z własnymi wersetami biblijnymi (opcjonalnie)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Ścieżka do pliku JSON z własnymi wersetami biblijnymi (np. pregnancy_bible_verses.json lub /config/my_verses.json). Zostaw puste, aby użyć wersetów domyślnych."
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "Termin porodu nie może być w przeszłości",
+      "invalid_date": "Nieprawidłowy format daty. Użyj RRRR-MM-DD"
+    },
+    "abort": {
+      "already_configured": "To śledzenie ciąży jest już skonfigurowane"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Aktualizuj Śledzenie ciąży",
+        "description": "Zaktualizuj termin porodu lub długość ciąży. Bieżący termin: {current_due_date}",
+        "data": {
+          "due_date": "Przewidywany termin porodu",
+          "pregnancy_length": "Długość ciąży (dni)",
+          "custom_bible_verses": "Plik z własnymi wersetami biblijnymi (opcjonalnie)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Ścieżka do pliku JSON z własnymi wersetami biblijnymi. Zostaw puste, aby użyć wersetów domyślnych."
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Nieprawidłowy format daty. Użyj RRRR-MM-DD"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "weeks": {"name": "Tygodnie"},
+      "days_elapsed": {"name": "Dni, które upłynęły"},
+      "days_remaining": {"name": "Pozostałe dni"},
+      "percent": {"name": "Procent ukończenia"},
+      "trimester": {"name": "Trymestr"},
+      "status": {"name": "Status"},
+      "size_comparison": {"name": "Porównanie rozmiaru"},
+      "dad_size_comparison": {"name": "Porównanie rozmiaru taty"},
+      "size_comparison_image": {"name": "Obraz porównania rozmiaru"},
+      "countdown": {"name": "Odliczanie"},
+      "due_date_range": {"name": "Zakres terminu porodu"},
+      "weekly_summary": {"name": "Podsumowanie tygodnia"},
+      "milestone": {"name": "Kamień milowy"},
+      "bible_verse": {"name": "Werset biblijny"},
+      "bible_verse_reference": {"name": "Odnośnik wersetu"}
+    }
+  }
+}
