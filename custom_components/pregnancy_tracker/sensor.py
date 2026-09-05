@@ -116,19 +116,19 @@ class PregnancyTrackerSensorBase(SensorEntity):
     def _calculate_values(self) -> dict[str, Any]:
         """Calculate all pregnancy values."""
         today = date.today()
-        
+
         # Days elapsed since start
         days_elapsed = (today - self._start_date).days
-        
+
         # Days remaining until due date
         days_remaining = (self._due_date - today).days
-        
+
         # Weeks elapsed (rounded down)
         weeks_elapsed = days_elapsed // 7
-        
+
         # Percentage complete
         percent = min(100, max(0, (days_elapsed / self._pregnancy_length) * 100))
-        
+
         # Trimester (1, 2, or 3)
         if weeks_elapsed < 13:
             trimester = 1
@@ -136,7 +136,7 @@ class PregnancyTrackerSensorBase(SensorEntity):
             trimester = 2
         else:
             trimester = 3
-        
+
         # Status
         if days_remaining < 0:
             status = "overdue"
@@ -146,7 +146,7 @@ class PregnancyTrackerSensorBase(SensorEntity):
             status = "just_started"
         else:
             status = "in_progress"
-        
+
         return {
             "days_elapsed": days_elapsed,
             "days_remaining": days_remaining,
@@ -175,7 +175,7 @@ class PregnancyWeeksSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_WEEKS}"
-        self._attr_name = "Weeks"
+        self._attr_translation_key = SENSOR_WEEKS
 
     @property
     def native_value(self) -> int:
@@ -212,7 +212,7 @@ class PregnancyDaysElapsedSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_DAYS_ELAPSED}"
-        self._attr_name = "Days Elapsed"
+        self._attr_translation_key = SENSOR_DAYS_ELAPSED
 
     @property
     def native_value(self) -> int:
@@ -239,7 +239,7 @@ class PregnancyDaysRemainingSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_DAYS_REMAINING}"
-        self._attr_name = "Days Remaining"
+        self._attr_translation_key = SENSOR_DAYS_REMAINING
 
     @property
     def native_value(self) -> int:
@@ -273,7 +273,7 @@ class PregnancyPercentSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_PERCENT}"
-        self._attr_name = "Percent Complete"
+        self._attr_translation_key = SENSOR_PERCENT
 
     @property
     def native_value(self) -> float:
@@ -298,7 +298,7 @@ class PregnancyTrimesterSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_TRIMESTER}"
-        self._attr_name = "Trimester"
+        self._attr_translation_key = SENSOR_TRIMESTER
 
     @property
     def native_value(self) -> int:
@@ -336,7 +336,7 @@ class PregnancyStatusSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_STATUS}"
-        self._attr_name = "Status"
+        self._attr_translation_key = SENSOR_STATUS
 
     @property
     def native_value(self) -> str:
@@ -367,7 +367,7 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_SIZE_COMPARISON}"
-        self._attr_name = "Size Comparison"
+        self._attr_translation_key = SENSOR_SIZE_COMPARISON
 
     @property
     def native_value(self) -> str:
@@ -382,9 +382,9 @@ class PregnancySizeComparisonSensor(PregnancyTrackerSensorBase):
         """Return additional attributes with all comparison modes and emojis."""
         values = self._calculate_values()
         week = values["weeks_elapsed"]
-        
+
         comparisons = get_all_comparisons(week)
-        
+
         return {
             "week": week,
             "veggie": comparisons["veggie"]["label"],
@@ -410,7 +410,7 @@ class PregnancyDadSizeComparisonSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_DAD_SIZE_COMPARISON}"
-        self._attr_name = "Dad Size Comparison"
+        self._attr_translation_key = SENSOR_DAD_SIZE_COMPARISON
 
     @property
     def native_value(self) -> str:
@@ -451,7 +451,7 @@ class PregnancySizeComparisonImageSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_SIZE_COMPARISON_IMAGE}"
-        self._attr_name = "Size Comparison Image"
+        self._attr_translation_key = SENSOR_SIZE_COMPARISON_IMAGE
 
     @property
     def native_value(self) -> str | None:
@@ -492,7 +492,7 @@ class PregnancyCountdownSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_COUNTDOWN}"
-        self._attr_name = "Countdown"
+        self._attr_translation_key = SENSOR_COUNTDOWN
 
     @property
     def native_value(self) -> str:
@@ -501,7 +501,7 @@ class PregnancyCountdownSensor(PregnancyTrackerSensorBase):
         days_remaining = values["days_remaining"]
         weeks_remaining = days_remaining // 7
         days_in_week = days_remaining % 7
-        
+
         if days_remaining < 0:
             return f"Overdue by {abs(days_remaining)} days"
         elif days_remaining == 0:
@@ -516,7 +516,7 @@ class PregnancyCountdownSensor(PregnancyTrackerSensorBase):
         """Return additional attributes."""
         values = self._calculate_values()
         days_remaining = values["days_remaining"]
-        
+
         return {
             "days_remaining": days_remaining,
             "weeks_remaining": days_remaining // 7,
@@ -541,7 +541,7 @@ class PregnancyDueDateRangeSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_DUE_DATE_RANGE}"
-        self._attr_name = "Due Date Range"
+        self._attr_translation_key = SENSOR_DUE_DATE_RANGE
 
     @property
     def native_value(self) -> str:
@@ -555,7 +555,7 @@ class PregnancyDueDateRangeSensor(PregnancyTrackerSensorBase):
         """Return additional attributes."""
         values = self._calculate_values()
         weeks = values["weeks_elapsed"]
-        
+
         # Calculate term status
         if weeks < 37:
             term_status = "Preterm"
@@ -567,7 +567,7 @@ class PregnancyDueDateRangeSensor(PregnancyTrackerSensorBase):
             term_status = "Late term"
         else:
             term_status = "Post term"
-        
+
         return {
             "early_date": (self._due_date - timedelta(days=14)).isoformat(),
             "due_date": self._due_date.isoformat(),
@@ -592,7 +592,7 @@ class PregnancyWeeklySummarySensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_WEEKLY_SUMMARY}"
-        self._attr_name = "Weekly Summary"
+        self._attr_translation_key = SENSOR_WEEKLY_SUMMARY
 
     @property
     def native_value(self) -> str:
@@ -626,14 +626,14 @@ class PregnancyMilestoneSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_MILESTONE}"
-        self._attr_name = "Milestone"
+        self._attr_translation_key = SENSOR_MILESTONE
 
     @property
     def native_value(self) -> str:
         """Return the state of the sensor."""
         values = self._calculate_values()
         week = values["weeks_elapsed"]
-        
+
         # Define milestones
         if week >= 40:
             return "Due date reached!"
@@ -655,7 +655,7 @@ class PregnancyMilestoneSensor(PregnancyTrackerSensorBase):
         """Return additional attributes."""
         values = self._calculate_values()
         week = values["weeks_elapsed"]
-        
+
         # Track which milestones have been reached
         milestones_reached = []
         if week >= 5:
@@ -670,7 +670,7 @@ class PregnancyMilestoneSensor(PregnancyTrackerSensorBase):
             milestones_reached.append("Full term (Week 37)")
         if week >= 40:
             milestones_reached.append("Due date (Week 40)")
-        
+
         # Calculate next milestone
         next_milestone = None
         next_milestone_weeks = None
@@ -692,7 +692,7 @@ class PregnancyMilestoneSensor(PregnancyTrackerSensorBase):
         elif week < 40:
             next_milestone = "Due date"
             next_milestone_weeks = 40 - week
-        
+
         return {
             "week": week,
             "milestones_reached": milestones_reached,
@@ -719,7 +719,7 @@ class PregnancyBibleVerseSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_BIBLE_VERSE}"
-        self._attr_name = "Bible Verse"
+        self._attr_translation_key = SENSOR_BIBLE_VERSE
         self._custom_bible_verses = custom_bible_verses
 
     @property
@@ -760,7 +760,7 @@ class PregnancyBibleVerseReferenceSensor(PregnancyTrackerSensorBase):
         """Initialize the sensor."""
         super().__init__(config_entry, due_date, start_date, pregnancy_length, device_info)
         self._attr_unique_id = f"{config_entry.entry_id}_{SENSOR_BIBLE_VERSE_REFERENCE}"
-        self._attr_name = "Bible Verse Reference"
+        self._attr_translation_key = SENSOR_BIBLE_VERSE_REFERENCE
 
     @property
     def native_value(self) -> str:

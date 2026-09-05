@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "设置孕期跟踪",
+        "description": "配置孕期跟踪。蔬菜尺寸对比和爸爸尺寸对比均可用。",
+        "data": {
+          "due_date": "预产期",
+          "pregnancy_length": "孕期天数",
+          "custom_bible_verses": "自定义圣经经文文件（可选）"
+        },
+        "data_description": {
+          "custom_bible_verses": "包含自定义圣经经文的 JSON 文件路径（例如 pregnancy_bible_verses.json 或 /config/my_verses.json）。留空则使用默认经文。"
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "预产期不能是过去的日期",
+      "invalid_date": "日期格式无效。请使用 YYYY-MM-DD"
+    },
+    "abort": {
+      "already_configured": "此孕期跟踪已配置"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "更新孕期跟踪",
+        "description": "更新预产期或孕期长度。当前预产期：{current_due_date}",
+        "data": {
+          "due_date": "预产期",
+          "pregnancy_length": "孕期天数",
+          "custom_bible_verses": "自定义圣经经文文件（可选）"
+        },
+        "data_description": {
+          "custom_bible_verses": "自定义圣经经文 JSON 文件路径。留空则使用默认经文。"
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "日期格式无效。请使用 YYYY-MM-DD"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "weeks": {"name": "孕周"},
+      "days_elapsed": {"name": "已过天数"},
+      "days_remaining": {"name": "剩余天数"},
+      "percent": {"name": "完成百分比"},
+      "trimester": {"name": "孕期阶段"},
+      "status": {"name": "状态"},
+      "size_comparison": {"name": "尺寸对比"},
+      "dad_size_comparison": {"name": "爸爸尺寸对比"},
+      "size_comparison_image": {"name": "尺寸对比图片"},
+      "countdown": {"name": "倒计时"},
+      "due_date_range": {"name": "预产期范围"},
+      "weekly_summary": {"name": "每周摘要"},
+      "milestone": {"name": "里程碑"},
+      "bible_verse": {"name": "圣经经文"},
+      "bible_verse_reference": {"name": "经文出处"}
+    }
+  }
+}

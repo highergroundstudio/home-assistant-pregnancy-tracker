@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "妊娠トラッカーを設定",
+        "description": "妊娠トラッカーを設定します。野菜サイズ比較とパパサイズ比較の両方が利用できます。",
+        "data": {
+          "due_date": "出産予定日",
+          "pregnancy_length": "妊娠期間（日）",
+          "custom_bible_verses": "カスタム聖書箇所ファイル（任意）"
+        },
+        "data_description": {
+          "custom_bible_verses": "カスタム聖書箇所を含む JSON ファイルのパス（例: pregnancy_bible_verses.json または /config/my_verses.json）。空欄の場合は既定の聖句を使用します。"
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "出産予定日を過去にすることはできません",
+      "invalid_date": "日付形式が無効です。YYYY-MM-DD を使用してください"
+    },
+    "abort": {
+      "already_configured": "この妊娠トラッカーは既に設定されています"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "妊娠トラッカーを更新",
+        "description": "出産予定日または妊娠期間を更新します。現在の予定日: {current_due_date}",
+        "data": {
+          "due_date": "出産予定日",
+          "pregnancy_length": "妊娠期間（日）",
+          "custom_bible_verses": "カスタム聖書箇所ファイル（任意）"
+        },
+        "data_description": {
+          "custom_bible_verses": "カスタム聖書箇所 JSON ファイルのパス。空欄の場合は既定の聖句を使用します。"
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "日付形式が無効です。YYYY-MM-DD を使用してください"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "weeks": {"name": "週数"},
+      "days_elapsed": {"name": "経過日数"},
+      "days_remaining": {"name": "残日数"},
+      "percent": {"name": "進捧率"},
+      "trimester": {"name": "妊娠期"},
+      "status": {"name": "状態"},
+      "size_comparison": {"name": "サイズ比較"},
+      "dad_size_comparison": {"name": "パパサイズ比較"},
+      "size_comparison_image": {"name": "サイズ比較画像"},
+      "countdown": {"name": "カウントダウン"},
+      "due_date_range": {"name": "予定日の範囲"},
+      "weekly_summary": {"name": "週間まとめ"},
+      "milestone": {"name": "マイルストーン"},
+      "bible_verse": {"name": "聖書の聖句"},
+      "bible_verse_reference": {"name": "聖句の参照"}
+    }
+  }
+}

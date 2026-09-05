@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Schwangerschafts-Tracker einrichten",
+        "description": "Konfiguriere den Schwangerschafts-Tracker. Gemüse- und Papa-Größenvergleiche stehen beide zur Verfügung.",
+        "data": {
+          "due_date": "Geburtstermin",
+          "pregnancy_length": "Schwangerschaftsdauer (Tage)",
+          "custom_bible_verses": "Eigene Bibelverse-Datei (optional)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Pfad zu einer JSON-Datei mit eigenen Bibelversen (z. B. pregnancy_bible_verses.json oder /config/my_verses.json). Leer lassen, um die Standardverse zu verwenden."
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "Der Geburtstermin darf nicht in der Vergangenheit liegen",
+      "invalid_date": "Ungültiges Datumsformat. Bitte JJJJ-MM-TT verwenden"
+    },
+    "abort": {
+      "already_configured": "Dieser Schwangerschafts-Tracker ist bereits eingerichtet"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Schwangerschafts-Tracker aktualisieren",
+        "description": "Aktualisiere den Geburtstermin oder die Schwangerschaftsdauer. Aktueller Termin: {current_due_date}",
+        "data": {
+          "due_date": "Geburtstermin",
+          "pregnancy_length": "Schwangerschaftsdauer (Tage)",
+          "custom_bible_verses": "Eigene Bibelverse-Datei (optional)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Pfad zu einer JSON-Datei mit eigenen Bibelversen. Leer lassen, um die Standardverse zu verwenden."
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Ungültiges Datumsformat. Bitte JJJJ-MM-TT verwenden"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "weeks": {"name": "Wochen"},
+      "days_elapsed": {"name": "Vergangene Tage"},
+      "days_remaining": {"name": "Verbleibende Tage"},
+      "percent": {"name": "Fortschritt in Prozent"},
+      "trimester": {"name": "Trimester"},
+      "status": {"name": "Status"},
+      "size_comparison": {"name": "Größenvergleich"},
+      "dad_size_comparison": {"name": "Papa-Größenvergleich"},
+      "size_comparison_image": {"name": "Bild zum Größenvergleich"},
+      "countdown": {"name": "Countdown"},
+      "due_date_range": {"name": "Geburtstermin-Spanne"},
+      "weekly_summary": {"name": "Wöchentliche Zusammenfassung"},
+      "milestone": {"name": "Meilenstein"},
+      "bible_verse": {"name": "Bibelvers"},
+      "bible_verse_reference": {"name": "Bibelstellenangabe"}
+    }
+  }
+}

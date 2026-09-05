@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Zwangerschapstracker instellen",
+        "description": "Stel de zwangerschapstracker in. Zowel groente- als papa-groottevergelijkingen zijn beschikbaar.",
+        "data": {
+          "due_date": "Uitgerekende datum",
+          "pregnancy_length": "Zwangerschapsduur (dagen)",
+          "custom_bible_verses": "Bestand met eigen Bijbelverzen (optioneel)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Pad naar een JSON-bestand met eigen Bijbelverzen (bijv. pregnancy_bible_verses.json of /config/my_verses.json). Laat leeg om de standaardverzen te gebruiken."
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "De uitgerekende datum mag niet in het verleden liggen",
+      "invalid_date": "Ongeldig datumformaat. Gebruik JJJJ-MM-DD"
+    },
+    "abort": {
+      "already_configured": "Deze zwangerschapstracker is al geconfigureerd"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Zwangerschapstracker bijwerken",
+        "description": "Werk de uitgerekende datum of zwangerschapsduur bij. Huidige uitgerekende datum: {current_due_date}",
+        "data": {
+          "due_date": "Uitgerekende datum",
+          "pregnancy_length": "Zwangerschapsduur (dagen)",
+          "custom_bible_verses": "Bestand met eigen Bijbelverzen (optioneel)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Pad naar een JSON-bestand met eigen Bijbelverzen. Laat leeg om de standaardverzen te gebruiken."
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Ongeldig datumformaat. Gebruik JJJJ-MM-DD"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "weeks": {"name": "Weken"},
+      "days_elapsed": {"name": "Verstreken dagen"},
+      "days_remaining": {"name": "Resterende dagen"},
+      "percent": {"name": "Percentage voltooid"},
+      "trimester": {"name": "Trimester"},
+      "status": {"name": "Status"},
+      "size_comparison": {"name": "Groottevergelijking"},
+      "dad_size_comparison": {"name": "Papa-groottevergelijking"},
+      "size_comparison_image": {"name": "Afbeelding groottevergelijking"},
+      "countdown": {"name": "Aftellen"},
+      "due_date_range": {"name": "Bereik uitgerekende datum"},
+      "weekly_summary": {"name": "Wekelijkse samenvatting"},
+      "milestone": {"name": "Mijlpaal"},
+      "bible_verse": {"name": "Bijbelvers"},
+      "bible_verse_reference": {"name": "Bijbelverwijzing"}
+    }
+  }
+}

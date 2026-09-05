@@ -1,0 +1,63 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Konfigurera Graviditetsspårare",
+        "description": "Konfigurera din graviditetsspårare. Både grönsaks- och pappa-storleksjämförelser kommer att vara tillgängliga.",
+        "data": {
+          "due_date": "Beräknat förlossningsdatum",
+          "pregnancy_length": "Graviditetslängd (dagar)",
+          "custom_bible_verses": "Fil med egna bibelverser (valfritt)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Sökväg till en JSON-fil med egna bibelverser (t.ex. pregnancy_bible_verses.json eller /config/my_verses.json). Lämna tomt för att använda standardverser."
+        }
+      }
+    },
+    "error": {
+      "due_date_past": "Förlossningsdatumet kan inte ligga i det förflutna",
+      "invalid_date": "Ogiltigt datumformat. Använd ÅÅÅÅ-MM-DD"
+    },
+    "abort": {
+      "already_configured": "Denna graviditetsspårare är redan konfigurerad"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Uppdatera Graviditetsspårare",
+        "description": "Uppdatera förlossningsdatum eller graviditetslängd. Nuvarande förlossningsdatum: {current_due_date}",
+        "data": {
+          "due_date": "Beräknat förlossningsdatum",
+          "pregnancy_length": "Graviditetslängd (dagar)",
+          "custom_bible_verses": "Fil med egna bibelverser (valfritt)"
+        },
+        "data_description": {
+          "custom_bible_verses": "Sökväg till en JSON-fil med egna bibelverser. Lämna tomt för att använda standardverser."
+        }
+      }
+    },
+    "error": {
+      "invalid_date": "Ogiltigt datumformat. Använd ÅÅÅÅ-MM-DD"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "weeks": {"name": "Veckor"},
+      "days_elapsed": {"name": "Dagar som gått"},
+      "days_remaining": {"name": "Dagar kvar"},
+      "percent": {"name": "Procent slutfört"},
+      "trimester": {"name": "Trimester"},
+      "status": {"name": "Status"},
+      "size_comparison": {"name": "Storleksjämförelse"},
+      "dad_size_comparison": {"name": "Pappa-storleksjämförelse"},
+      "size_comparison_image": {"name": "Bild för storleksjämförelse"},
+      "countdown": {"name": "Nedräkning"},
+      "due_date_range": {"name": "Intervall för förlossningsdatum"},
+      "weekly_summary": {"name": "Veckosammanfattning"},
+      "milestone": {"name": "Milstolpe"},
+      "bible_verse": {"name": "Bibelvers"},
+      "bible_verse_reference": {"name": "Bibelhänvisning"}
+    }
+  }
+}
